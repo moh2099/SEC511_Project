@@ -42,7 +42,7 @@ const SidebarContent = () => {
       <div className="gx-sidebar-content">
         <div className={`gx-sidebar-notifications ${getNoHeaderClass(navStyle)}`}>
           <UserProfile/>
-          <AppsNavigation/>
+          {/* <AppsNavigation/> */}
         </div>
         <CustomScrollbars className="gx-layout-sider-scrollbar">
           <Menu
@@ -51,7 +51,7 @@ const SidebarContent = () => {
             theme={themeType === THEME_TYPE_LITE ? 'lite' : 'dark'}
             mode="inline">
 
-            <MenuItemGroup key="main" className="gx-menu-group" title={<IntlMessages id="sidebar.main"/>}>
+            {/* <MenuItemGroup key="main" className="gx-menu-group" title={<IntlMessages id="sidebar.main"/>}>
               <SubMenu key="dashboard" className={getNavStyleSubMenuClass(navStyle)}
                        title={<span> <i className="icon icon-dasbhoard"/>
                          <span><IntlMessages id="sidebar.dashboard"/></span></span>}>
@@ -90,7 +90,7 @@ const SidebarContent = () => {
                  <span> <IntlMessages id="sidebar.layouts"/></span></Link>
               </Menu.Item>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
             <MenuItemGroup key="in-built-apps" className="gx-menu-group"
                            title={<IntlMessages id="sidebar.inBuiltApp"/>}>
@@ -99,7 +99,7 @@ const SidebarContent = () => {
                   id="sidebar.mailApp"/></span></Link>
               </Menu.Item>
 
-              <Menu.Item key="in-built-apps/todo">
+              {/* <Menu.Item key="in-built-apps/todo">
                 <Link to="/in-built-apps/todo"><i
                   className="icon icon-check-square-o"/><span><IntlMessages
                   id="sidebar.todoApp"/></span></Link>
@@ -130,10 +130,10 @@ const SidebarContent = () => {
                 <Link to="/in-built-apps/firebase-crud"><i
                   className="icon icon-icon"/><span><IntlMessages
                   id="sidebar.crud"/></span></Link>
-              </Menu.Item>
+              </Menu.Item> */}
             </MenuItemGroup>
 
-            <MenuItemGroup key="social-apps" className="gx-menu-group" title={<IntlMessages id="sidebar.social"/>}>
+            {/* <MenuItemGroup key="social-apps" className="gx-menu-group" title={<IntlMessages id="sidebar.social"/>}>
               <Menu.Item key="social-apps/profile">
                 <Link to="/social-apps/profile">
                   <i className="icon icon-profile2"/>
@@ -147,9 +147,9 @@ const SidebarContent = () => {
                   <span><IntlMessages id="sidebar.wall"/></span>
                 </Link>
               </Menu.Item>
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
-            <MenuItemGroup key="components" className="gx-menu-group" title={<IntlMessages id="sidebar.components"/>}>
+            {/* <MenuItemGroup key="components" className="gx-menu-group" title={<IntlMessages id="sidebar.components"/>}>
 
               <SubMenu key="general" className={getNavStyleSubMenuClass(navStyle)} title={
                 <span>
@@ -456,9 +456,9 @@ const SidebarContent = () => {
                 </Menu.Item>
               </SubMenu>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
-            <MenuItemGroup key="extraComponents" className="gx-menu-group"
+            {/* <MenuItemGroup key="extraComponents" className="gx-menu-group"
                            title={<IntlMessages id="sidebar.extraComponents"/>}>
 
               <SubMenu key="editor" className={getNavStyleSubMenuClass(navStyle)}
@@ -537,9 +537,9 @@ const SidebarContent = () => {
                     id="sidebar.extensions.shuffle"/></span></Link>
               </Menu.Item>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
-            <MenuItemGroup key="extensions" className="gx-menu-group" title={<IntlMessages id="sidebar.extensions"/>}>
+            {/* <MenuItemGroup key="extensions" className="gx-menu-group" title={<IntlMessages id="sidebar.extensions"/>}>
 
               <SubMenu key="map" className={getNavStyleSubMenuClass(navStyle)}
                        title={<span> <i className="icon icon-extensions"/>
@@ -809,9 +809,9 @@ const SidebarContent = () => {
                 </Menu.Item>
               </SubMenu>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
-            <MenuItemGroup key="custom-views" className="gx-menu-group"
+            {/* <MenuItemGroup key="custom-views" className="gx-menu-group"
                            title={<IntlMessages id="sidebar.customViews"/>}>
               <SubMenu key="user-auth" className={getNavStyleSubMenuClass(navStyle)}
                        title={<span><i className="icon icon-auth-screen"/><span><IntlMessages
@@ -915,9 +915,9 @@ const SidebarContent = () => {
                 </Menu.Item>
               </SubMenu>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
-            <MenuItemGroup key="documents" className="gx-menu-group" title={<IntlMessages id="sidebar.documents"/>}>
+            {/* <MenuItemGroup key="documents" className="gx-menu-group" title={<IntlMessages id="sidebar.documents"/>}>
 
               <Menu.Item key="documents/changelog">
                 <Link to="/documents/changelog">
@@ -933,7 +933,7 @@ const SidebarContent = () => {
                 </Link>
               </Menu.Item>
 
-            </MenuItemGroup>
+            </MenuItemGroup> */}
 
           </Menu>
         </CustomScrollbars>

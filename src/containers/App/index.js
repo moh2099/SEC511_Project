@@ -114,7 +114,7 @@ const App = (props) => {
       if (authUser === null) {
         history.push('/signin');
       } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
-        history.push('/main/dashboard/crypto');
+        history.push('/in-built-apps/mail');
       } else {
         history.push(initURL);
       }

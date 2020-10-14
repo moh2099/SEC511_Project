@@ -325,11 +325,11 @@ const CustomizerSystem = () => {
           getCustomizerContent()
         }
       </Drawer>
-      <div className="gx-customizer-option">
+      {/* <div className="gx-customizer-option">
         <Button type="primary" onClick={toggleCustomizer}>
           <i className="icon icon-setting fxicon-hc-spin gx-d-block"/>
         </Button>
-      </div>
+      </div> */}
     </>
   );
 };
