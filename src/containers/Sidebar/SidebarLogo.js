@@ -22,9 +22,7 @@ const SidebarLogo = () => {
   }
   return (
     <div className="gx-layout-sider-header">
-
       {(navStyle === NAV_STYLE_FIXED || navStyle === NAV_STYLE_MINI_SIDEBAR) ? <div className="gx-linebar">
-
         <i
           className={`gx-icon-btn icon icon-${navStyle === NAV_STYLE_MINI_SIDEBAR ? 'menu-unfold' : 'menu-fold'} ${themeType !== THEME_TYPE_LITE ? 'gx-text-white' : ''}`}
           onClick={() => {
@@ -43,13 +41,11 @@ const SidebarLogo = () => {
 
       <Link to="/" className="gx-site-logo">
         {navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR && width >= TAB_SIZE ?
-          <img alt="" src={require("assets/images/w-logo.png")}/> :
+          <img alt="lo" src={require("assets/images/w-logo.png")}/> :
           themeType === THEME_TYPE_LITE ?
-            <img alt="" src={require("assets/images/logo-white.png")}/> :
-            <img alt="" src={require("assets/images/logo.png")}/>}
-
+            <img alt="logo1" src={require("assets/images/logo-white.png")}/> :
+            <img alt="logo2" src={require("assets/images/logo.png")}/>}
       </Link>
-
     </div>
   );
 };

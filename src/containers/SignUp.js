@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Checkbox, Form, Icon, Input} from "antd";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
-import {connect} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {
   hideMessage,
   showAuthLoader,
@@ -19,47 +19,44 @@ import CircularProgress from "components/CircularProgress/index";
 
 const FormItem = Form.Item;
 
-class SignUp extends React.Component {
-  handleSubmit = (e) => {
+const SignUp = (props) => {
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const {loader, alertMessage, showMessage, authUser} = useSelector(({auth}) => auth);
+
+
+  useEffect(() => {
+    if (showMessage) {
+      setTimeout(() => {
+        dispatch(hideMessage());
+      }, 100);
+    }
+    if (authUser !== null) {
+      history.push('/');
+    }
+  });
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    props.form.validateFields((err, values) => {
       console.log("values", values);
       if (!err) {
-        this.props.showAuthLoader();
-        this.props.userSignUp(values);
+        dispatch(showAuthLoader());
+        dispatch(userSignUp(values));
       }
     });
   };
 
-  constructor() {
-    super();
-    this.state = {
-      email: 'demo@example.com',
-      password: 'demo#123'
-    }
-  }
+  const {getFieldDecorator} = props.form;
 
-  componentDidUpdate() {
-    if (this.props.showMessage) {
-      setTimeout(() => {
-        this.props.hideMessage();
-      }, 100);
-    }
-    if (this.props.authUser !== null) {
-      this.props.history.push('/');
-    }
-  }
-
-  render() {
-    const {getFieldDecorator} = this.props.form;
-    const {showMessage, loader, alertMessage} = this.props;
     return (
       <div className="gx-app-login-wrap">
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
             <div className="gx-app-logo-content">
               <div className="gx-app-logo-content-bg">
-                <img src={require('assets/images/appModule/neature.jpg')} alt='Neature'/>
+                <img src={"https://via.placeholder.com/272x395"} alt='Neature'/>
               </div>
               <div className="gx-app-logo-wid">
                 <h1><IntlMessages id="app.userAuth.signUp"/></h1>
@@ -72,7 +69,7 @@ class SignUp extends React.Component {
             </div>
 
             <div className="gx-app-login-content">
-              <Form onSubmit={this.handleSubmit} className="gx-signup-form gx-form-row0">
+              <Form onSubmit={handleSubmit} className="gx-signup-form gx-form-row0">
                 <FormItem>
                   {getFieldDecorator('userName', {
                     rules: [{required: true, message: 'Please input your username!'}],
@@ -119,26 +116,26 @@ class SignUp extends React.Component {
                   <ul className="gx-social-link">
                     <li>
                       <Icon type="google" onClick={() => {
-                        this.props.showAuthLoader();
-                        this.props.userGoogleSignIn();
+                        dispatch(showAuthLoader());
+                        dispatch(userGoogleSignIn());
                       }}/>
                     </li>
                     <li>
                       <Icon type="facebook" onClick={() => {
-                        this.props.showAuthLoader();
-                        this.props.userFacebookSignIn();
+                        dispatch(showAuthLoader());
+                        dispatch(userFacebookSignIn());
                       }}/>
                     </li>
                     <li>
                       <Icon type="github" onClick={() => {
-                        this.props.showAuthLoader();
-                        this.props.userGithubSignIn();
+                        dispatch(showAuthLoader());
+                        dispatch(userGithubSignIn());
                       }}/>
                     </li>
                     <li>
                       <Icon type="twitter" onClick={() => {
-                        this.props.showAuthLoader();
-                        this.props.userTwitterSignIn();
+                        dispatch(showAuthLoader());
+                        dispatch(userTwitterSignIn());
                       }}/>
                     </li>
                   </ul>
@@ -155,25 +152,11 @@ class SignUp extends React.Component {
           </div>
         </div>
       </div>
-
     );
-  }
+};
 
-}
 
 const WrappedSignUpForm = Form.create()(SignUp);
 
-const mapStateToProps = ({auth}) => {
-  const {loader, alertMessage, showMessage, authUser} = auth;
-  return {loader, alertMessage, showMessage, authUser}
-};
 
-export default connect(mapStateToProps, {
-  userSignUp,
-  hideMessage,
-  showAuthLoader,
-  userFacebookSignIn,
-  userGoogleSignIn,
-  userGithubSignIn,
-  userTwitterSignIn
-})(WrappedSignUpForm);
+export default WrappedSignUpForm;

@@ -30,9 +30,7 @@ const WriteBox = (props) => {
   };
 
   const handleClickImage = () => {
-    setIsOpen((previousState) => ({
-      isOpen: !previousState.isOpen
-    }));
+    setIsOpen(!isOpen);
   };
 
   const handleAddPost = () => {

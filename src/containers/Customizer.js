@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {Button, Drawer, Form, Radio} from "antd";
 import {useDispatch, useSelector} from "react-redux";
-import Auxiliary from "util/Auxiliary";
 import CustomScrollbars from "util/CustomScrollbars";
 import {onLayoutTypeChange, setThemeType} from "appRedux/actions/Setting";
 
@@ -50,8 +49,7 @@ import {
   THEME_TYPE_LITE,
   THEME_TYPE_SEMI_DARK
 } from "../constants/ThemeSetting";
-import {setThemeColor} from "../appRedux/actions";
-
+import {onNavStyleChange, setThemeColor} from "../appRedux/actions";
 
 const CustomizerSystem = () => {
 
@@ -63,14 +61,19 @@ const CustomizerSystem = () => {
   const navStyle = useSelector(({settings}) => settings.navStyle);
   const layoutType = useSelector(({settings}) => settings.layoutType);
 
+  console.log(" in  customizer", themeColor);
+
   const handleColorChange = (filename) => {
+    console.log("filename", filename);
     let link = document.createElement('link');
     link.type = 'text/css';
     link.rel = 'stylesheet';
     link.className = 'gx-style';
     link.href = `/css/${filename}.css`;
+
     setTimeout(() => {
       const children = document.getElementsByClassName('gx-style');
+
       if (children.length > 1) {
         for (let index = 0; index < children.length; index++) {
           if ((index + 1) < children.length) {
@@ -80,20 +83,20 @@ const CustomizerSystem = () => {
         }
       }
     }, 10000);
+    console.log("my link ",link);
     document.body.appendChild(link);
     dispatch(setThemeColor(filename));
   };
 
   const toggleCustomizer = () => {
-    setIsCustomizerOpened(previousState => (
-      {isCustomizerOpened: !previousState.isCustomizerOpened}));
+    setIsCustomizerOpened(!isCustomizerOpened);
   };
 
   const onThemeTypeChange = (e) => {
     dispatch(setThemeType(e.target.value));
   };
 
-  const onNavStyleChange = (navStyle) => {
+  const onNavStyleChanges = (navStyle) => {
     dispatch(onNavStyleChange(navStyle));
   };
 
@@ -248,62 +251,62 @@ const CustomizerSystem = () => {
   const getNavStyles = (navStyle) => {
     return <ul className="gx-nav-option gx-list-inline">
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_FIXED)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_FIXED)}
               className={`gx-pointer ${navStyle === NAV_STYLE_FIXED && 'active'}`}>
         <img src={require('assets/images/layouts/fixed.png')} alt='fixed'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_MINI_SIDEBAR)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_MINI_SIDEBAR)}
               className={`gx-pointer ${navStyle === NAV_STYLE_MINI_SIDEBAR && 'active'}`}>
         <img src={require('assets/images/layouts/mini sidebar.png')} alt='mini sidebar'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_DRAWER)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_DRAWER)}
               className={`gx-pointer ${navStyle === NAV_STYLE_DRAWER && 'active'}`}>
         <img src={require('assets/images/layouts/drawer nav.png')} alt='drawer nav'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_NO_HEADER_MINI_SIDEBAR)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_NO_HEADER_MINI_SIDEBAR)}
               className={`gx-pointer ${navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR && 'active'}`}>
         <img src={require('assets/images/layouts/no header mini sidebar.png')} alt='no hader mini sidebar'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR)}
               className={`gx-pointer ${navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR && 'active'}`}>
         <img src={require('assets/images/layouts/vertical no header.png')} alt='vertical no header'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_DEFAULT_HORIZONTAL)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_DEFAULT_HORIZONTAL)}
               className={`gx-pointer ${navStyle === NAV_STYLE_DEFAULT_HORIZONTAL && 'active'}`}>
         <img src={require('assets/images/layouts/default horizontal.png')} alt='default horizontal'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_DARK_HORIZONTAL)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_DARK_HORIZONTAL)}
               className={`gx-pointer ${navStyle === NAV_STYLE_DARK_HORIZONTAL && 'active'}`}>
         <img src={require('assets/images/layouts/dark horizontal.png')} alt='dark horizontal'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_INSIDE_HEADER_HORIZONTAL)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_INSIDE_HEADER_HORIZONTAL)}
               className={`gx-pointer ${navStyle === NAV_STYLE_INSIDE_HEADER_HORIZONTAL && 'active'}`}>
         <img src={require('assets/images/layouts/inside header horizontal.png')} alt='inside header horizontal'/>
         </span>
       </li>
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_BELOW_HEADER)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_BELOW_HEADER)}
               className={`gx-pointer ${navStyle === NAV_STYLE_BELOW_HEADER && 'active'}`}>
         <img src={require('assets/images/layouts/below header.png')} alt='below header'/>
         </span>
       </li>
 
       <li>
-        <span onClick={() => onNavStyleChange(NAV_STYLE_ABOVE_HEADER)}
+        <span onClick={() => onNavStyleChanges(NAV_STYLE_ABOVE_HEADER)}
               className={`gx-pointer ${navStyle === NAV_STYLE_ABOVE_HEADER && 'active'}`}>
         <img src={require('assets/images/layouts/top to header.png')} alt='top to header'/>
         </span>
@@ -312,7 +315,7 @@ const CustomizerSystem = () => {
   };
 
   return (
-    <Auxiliary>
+    <>
       <Drawer
         placement="right"
         closable={false}
@@ -327,7 +330,7 @@ const CustomizerSystem = () => {
           <i className="icon icon-setting fxicon-hc-spin gx-d-block"/>
         </Button>
       </div>
-    </Auxiliary>
+    </>
   );
 };
 

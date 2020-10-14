@@ -54,9 +54,10 @@ const App = (props) => {
     link.type = 'text/css';
     link.rel = 'stylesheet';
     link.href = "/css/style.css";
+
     link.className = 'gx-style';
     document.body.appendChild(link);
-  });
+  },[]);
 
   useEffect(() => {
         if (initURL === '') {
@@ -113,7 +114,7 @@ const App = (props) => {
       if (authUser === null) {
         history.push('/signin');
       } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
-        history.push('/sample');
+        history.push('/main/dashboard/crypto');
       } else {
         history.push(initURL);
       }
