@@ -1,5 +1,4 @@
 import React from "react";
-import {useSelector} from "react-redux";
 import {Menu} from "antd";
 import {Link} from "react-router-dom";
 
@@ -13,6 +12,7 @@ import {
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
 import IntlMessages from "../../util/IntlMessages";
+import {useSelector} from "react-redux";
 
 const SidebarContent = () => {
 
@@ -24,16 +24,11 @@ const SidebarContent = () => {
     }
     return "";
   };
-  // const getNavStyleSubMenuClass = (navStyle) => {
-  //   if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-  //     return "gx-no-header-submenu-popup";
-  //   }
-  //   return "";
-  // };
+
   const selectedKeys = pathname.substr(1);
   const defaultOpenKeys = selectedKeys.split('/')[1];
-
-  return (<>
+  return (
+    <>
 
       <SidebarLogo/>
       <div className="gx-sidebar-content">
@@ -61,6 +56,5 @@ const SidebarContent = () => {
 };
 
 SidebarContent.propTypes = {};
-
 export default SidebarContent;
 

@@ -26,13 +26,14 @@ import {
   TAB_SIZE
 } from "../../constants/ThemeSetting";
 import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
+import {useRouteMatch} from "react-router-dom";
 
 const {Content, Footer} = Layout;
 
-const MainApp = (props) => {
+const MainApp = () => {
 
-  const navStyle = useSelector(({settings}) => settings.navStyle);
-  const width = useSelector(({settings}) => settings.width);
+  const {width, navStyle} = useSelector(({settings}) => settings);
+  const match = useRouteMatch();
 
   const getContainerClass = (navStyle) => {
     switch (navStyle) {
@@ -46,8 +47,8 @@ const MainApp = (props) => {
         return "gx-container-wrap";
       case NAV_STYLE_ABOVE_HEADER:
         return "gx-container-wrap";
-      default :
-        return ""
+      default:
+        return '';
     }
   };
   const getNavStyles = (navStyle) => {
@@ -76,6 +77,7 @@ const MainApp = (props) => {
         return null;
     }
   };
+
   const getSidebar = (navStyle, width) => {
     if (width < TAB_SIZE) {
       return <Sidebar/>;
@@ -96,14 +98,13 @@ const MainApp = (props) => {
     }
   };
 
-  const {match} = props;
 
   return (
     <Layout className="gx-app-layout">
       {getSidebar(navStyle, width)}
       <Layout>
         {getNavStyles(navStyle)}
-        <Content className={`gx-layout-content ${getContainerClass(navStyle)}`}>
+        <Content className={`gx-layout-content ${getContainerClass(navStyle)} `}>
           <App match={match}/>
           <Footer>
             <div className="gx-layout-footer-content">
@@ -115,7 +116,5 @@ const MainApp = (props) => {
     </Layout>
   )
 };
-
-
 export default MainApp;
 

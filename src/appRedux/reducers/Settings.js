@@ -4,8 +4,7 @@ import {
   LAYOUT_TYPE_FULL,
   NAV_STYLE,
   NAV_STYLE_FIXED,
-  THEME_COLOR_SELECTION,
-  THEME_COLOR_SELECTION_PRESET,
+  THEME_COLOR,
   THEME_TYPE,
   THEME_TYPE_SEMI_DARK
 } from "../../constants/ThemeSetting";
@@ -15,9 +14,9 @@ const initialSettings = {
   navStyle: NAV_STYLE_FIXED,
   layoutType: LAYOUT_TYPE_FULL,
   themeType: THEME_TYPE_SEMI_DARK,
-  colorSelection: THEME_COLOR_SELECTION_PRESET,
+  themeColor: THEME_COLOR,
 
-  pathname: '',
+  pathname: '/',
   width: window.innerWidth,
   isDirectionRTL: false,
   locale: {
@@ -51,10 +50,10 @@ const settings = (state = initialSettings, action) => {
         ...state,
         themeType: action.themeType
       };
-    case THEME_COLOR_SELECTION:
+    case THEME_COLOR:
       return {
         ...state,
-        colorSelection: action.colorSelection
+        themeColor: action.themeColor
       };
 
     case NAV_STYLE:
