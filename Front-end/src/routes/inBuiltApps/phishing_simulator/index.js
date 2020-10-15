@@ -30,14 +30,14 @@ class Phishing_simulator extends PureComponent {
     return (
       <Card title="Phishing Simulator" className="gx-card">
         <Row>
-          <Col style={{ marginLeft: 50}}>
-            <Row>
-              <img width={550} src="https://www.phishingbox.com/phishing-test/img/phishing-test-q1.jpg" />
-            </Row>
+          <Col style={{ marginLeft: 50 }}>
             <Row style={{ marginTop: 17 }}>
               <Dropdown overlay={menu}>
                 <Button className="ant-dropdown-link" onClick={e => e.preventDefault()}> Choose the email type <DownOutlined /> </Button>
               </Dropdown>
+            </Row>
+            <Row>
+              <img width={550} src="https://www.phishingbox.com/phishing-test/img/phishing-test-q1.jpg" />
             </Row>
           </Col>
           <Col push={4}>
