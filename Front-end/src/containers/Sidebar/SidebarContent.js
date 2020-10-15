@@ -100,10 +100,10 @@ const SidebarContent = () => {
               </Menu.Item>
 
 
-              <Menu.Item key="in-built-apps/mail">
+              {/* <Menu.Item key="in-built-apps/mail">
                 <Link to="/in-built-apps/mail"><i className="icon icon-email" /><span><IntlMessages
                   id="sidebar.mailApp" /></span></Link>
-              </Menu.Item>
+              </Menu.Item> */}
 
               {/* <Menu.Item key="in-built-apps/todo">
                 <Link to="/in-built-apps/todo"><i

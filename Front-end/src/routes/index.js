@@ -1,14 +1,14 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 
-import Components from "./components/index";
-import CustomViews from "./customViews/index";
-import Extensions from "./extensions/index";
-import ExtraComponents from "./extraComponents/index";
+// import Components from "./components/index";
+// import CustomViews from "./customViews/index";
+// import Extensions from "./extensions/index";
+// import ExtraComponents from "./extraComponents/index";
 import InBuiltApps from "./inBuiltApps/index";
-import SocialApps from "./socialApps/index";
+// import SocialApps from "./socialApps/index";
 import Main from "./main/index";
-import Documents from "./documents/index";
+// import Documents from "./documents/index";
 
 const App = ({match}) => (
   <div className="gx-main-content-wrapper">
