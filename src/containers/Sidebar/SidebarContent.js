@@ -1,6 +1,6 @@
 import React from "react";
-import {Menu} from "antd";
-import {Link} from "react-router-dom";
+import { Menu } from "antd";
+import { Link } from "react-router-dom";
 
 import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
@@ -12,7 +12,7 @@ import {
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
 import IntlMessages from "../../util/IntlMessages";
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -20,7 +20,7 @@ const MenuItemGroup = Menu.ItemGroup;
 
 const SidebarContent = () => {
 
-  let {navStyle, themeType, pathname} = useSelector(({settings}) => settings);
+  let { navStyle, themeType, pathname } = useSelector(({ settings }) => settings);
 
   const getNoHeaderClass = (navStyle) => {
     if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR || navStyle === NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR) {
@@ -38,10 +38,10 @@ const SidebarContent = () => {
   const defaultOpenKeys = selectedKeys.split('/')[1];
   return (
     <>
-      <SidebarLogo/>
+      <SidebarLogo />
       <div className="gx-sidebar-content">
         <div className={`gx-sidebar-notifications ${getNoHeaderClass(navStyle)}`}>
-          <UserProfile/>
+          <UserProfile />
           {/* <AppsNavigation/> */}
         </div>
         <CustomScrollbars className="gx-layout-sider-scrollbar">
@@ -93,10 +93,16 @@ const SidebarContent = () => {
             </MenuItemGroup> */}
 
             <MenuItemGroup key="in-built-apps" className="gx-menu-group"
-                           title={<IntlMessages id="sidebar.inBuiltApp"/>}>
+              title={<IntlMessages id="sidebar.inBuiltApp" />}>
+
+              <Menu.Item key="in-built-apps/phishing_simulator">
+                <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-email" /><span>Phishing Simulator</span></Link>
+              </Menu.Item>
+
+
               <Menu.Item key="in-built-apps/mail">
-                <Link to="/in-built-apps/mail"><i className="icon icon-email"/><span><IntlMessages
-                  id="sidebar.mailApp"/></span></Link>
+                <Link to="/in-built-apps/mail"><i className="icon icon-email" /><span><IntlMessages
+                  id="sidebar.mailApp" /></span></Link>
               </Menu.Item>
 
               {/* <Menu.Item key="in-built-apps/todo">
