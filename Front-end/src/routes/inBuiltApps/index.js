@@ -1,5 +1,6 @@
 import React from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+//import {Redirect, Route, Switch} from "react-router-dom";
+import { Route, Switch} from "react-router-dom";
 
 import asyncComponent from "util/asyncComponent";
 

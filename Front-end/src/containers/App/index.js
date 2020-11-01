@@ -114,7 +114,7 @@ const App = (props) => {
       if (authUser === null) {
         history.push('/signin');
       } else if (initURL === '' || initURL === '/' || initURL === '/signin') {
-        history.push('/in-built-apps/mail');
+        history.push('/in-built-apps/phishing_simulator');
       } else {
         history.push(initURL);
       }

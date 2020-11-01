@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import CustomScrollbars from "util/CustomScrollbars";
 import SidebarLogo from "./SidebarLogo";
 import UserProfile from "./UserProfile";
-import AppsNavigation from "./AppsNavigation";
+//import AppsNavigation from "./AppsNavigation";
 import {
   NAV_STYLE_NO_HEADER_EXPANDED_SIDEBAR,
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
@@ -14,7 +14,7 @@ import {
 import IntlMessages from "../../util/IntlMessages";
 import { useSelector } from "react-redux";
 
-const SubMenu = Menu.SubMenu;
+//const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 
@@ -28,12 +28,12 @@ const SidebarContent = () => {
     }
     return "";
   };
-  const getNavStyleSubMenuClass = (navStyle) => {
-    if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
-      return "gx-no-header-submenu-popup";
-    }
-    return "";
-  };
+  // const getNavStyleSubMenuClass = (navStyle) => {
+  //   if (navStyle === NAV_STYLE_NO_HEADER_MINI_SIDEBAR) {
+  //     return "gx-no-header-submenu-popup";
+  //   }
+  //   return "";
+  // }
   const selectedKeys = pathname.substr(1);
   const defaultOpenKeys = selectedKeys.split('/')[1];
   return (

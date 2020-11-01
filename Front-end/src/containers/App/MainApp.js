@@ -26,7 +26,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   TAB_SIZE
 } from "../../constants/ThemeSetting";
-import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
+// import NoHeaderNotification from "../Topbar/NoHeaderNotification/index";
 import {useRouteMatch} from "react-router-dom";
 
 const {Content, Footer} = Layout;
