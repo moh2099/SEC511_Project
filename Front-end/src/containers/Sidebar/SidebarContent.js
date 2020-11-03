@@ -93,7 +93,7 @@ const SidebarContent = () => {
             </MenuItemGroup> */}
 
             <MenuItemGroup key="in-built-apps" className="gx-menu-group"
-              title={<IntlMessages id="sidebar.inBuiltApp" />}>
+              title={"Apps"}>
 
               <Menu.Item key="in-built-apps/phishing_simulator">
                 <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-email" /><span>Phishing Simulator</span></Link>
