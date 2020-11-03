@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 // import { Link } from "react-router-dom";
 // import IntlMessages from "../../../util/IntlMessages";
-import { notification, Card, Col, Row, Progress } from 'antd';
+import { Card, Col, Row, message } from 'antd';
 // import Basic from '../../components/feedback/Progress/Basic' //default calsses which are exported as default shouldn't be imported between {}
 import { Pagination } from 'antd';
 import Email from './Email'
@@ -34,13 +34,8 @@ class Phishing_simulator extends PureComponent {
     //   emails: { ...this.state.emails, allEmails}
     // })
 
-    let notificationStyle = {
-      duration: 1.7,
-      placement: "bottomLeft",
-      type: "success",
-      message: `your selection is: ${item.props.text} to the question #${item.props.id}`
-    }
-    notification.success(notificationStyle)
+    let message_content = `You have selected: ${item.props.text}`
+    message.success(message_content, 2)
 
     //let objIndex = user_answers.findIndex(e => e.qid === selection.qid)
 
@@ -91,6 +86,7 @@ class Phishing_simulator extends PureComponent {
 
   render() {
     let chosen_answer = parseInt(this.state.chosen_answer)
+    let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.emails.length) * 100
     let emailProps = {
       id: this.state.selected_email.id,
       sender: this.state.selected_email.sender,
@@ -99,17 +95,11 @@ class Phishing_simulator extends PureComponent {
     }
 
     return (
-      <Card title="Phishing Simulator" className="gx-card">
-        <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
-        <Row> 
+      <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
+        <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           <Col>
-          <Email user_answer={this.handleUserAnswer} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} />
-          </Col>
-          <Col push={4}>
-            <Progress type="circle" percent={
-              (Object.keys(this.state.user_answers).length / this.state.emails.length) * 100
-
-            } />
+            <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+            <Email user_answer={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} />
           </Col>
         </Row>
       </Card>
