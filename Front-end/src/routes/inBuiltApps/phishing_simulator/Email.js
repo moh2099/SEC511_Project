@@ -3,16 +3,24 @@ import { Menu, Dropdown, Button, Row, Col } from 'antd';
 
 import { DownOutlined } from '@ant-design/icons';
 
-
 class Email extends Component {
     state = {
         id: this.props.id,
         sender: this.props.sender,
         receiver: this.props.receiver,
-        content: this.props.content
-    }
-
-
+        content: this.props.content,
+     }
+ 
+get_selected_answer = (selection) => {    
+    if (selection === 1)
+        return "Phishing Email"
+    else if (selection === 2)
+        return "Real Email"
+    else if (selection === 3)
+        return "I don't know!"
+    else
+        return "Choose the email type"
+}
     render() {
         return (
             <Row>
@@ -25,7 +33,8 @@ class Email extends Component {
                                 <Menu.Item id={this.props.id} key="3" text={"I don't know!"} >I don't know!</Menu.Item>
                             </Menu>
                         }>
-                            <Button className="ant-dropdown-link" onClick={e => e.preventDefault()}> Choose the email type <DownOutlined /> </Button>
+                            <Button className="ant-dropdown-link" onClick={e => e.preventDefault()}> { this.get_selected_answer(this.props.selected_answer) } <DownOutlined />
+                            </Button>
                         </Dropdown>
                     </Row>
                     <Row>

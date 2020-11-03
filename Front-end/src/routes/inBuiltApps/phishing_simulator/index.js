@@ -12,7 +12,7 @@ class Phishing_simulator extends PureComponent {
   handleChange = (selectedPage) => {
     this.setState({
       ...this.state.emails,
-      selectedEmail: this.state.emails[selectedPage - 1]
+      selected_email: this.state.emails[selectedPage - 1]
     })
 
   }
@@ -24,7 +24,24 @@ class Phishing_simulator extends PureComponent {
     }
     let user_answers = this.state.user_answers
     user_answers = { ...user_answers, [selection.qid]: selection }
-    this.setState({ ...this.state, user_answers })
+    this.setState({ ...this.state, user_answers, chosen_answer: selection.user_selection })
+
+    // let tempEmail = this.state.emails.filter(email => email.id === selection.qid)
+    // tempEmail.user_selection = selection.user_selection
+    // let allEmails = this.state.emails
+    // allEmails.push({ ...tempEmail })
+    // this.setState({
+    //   emails: { ...this.state.emails, allEmails}
+    // })
+
+    let notificationStyle = {
+      duration: 1.7,
+      placement: "bottomLeft",
+      type: "success",
+      message: `your selection is: ${item.props.text} to the question #${item.props.id}`
+    }
+    notification.success(notificationStyle)
+
     //let objIndex = user_answers.findIndex(e => e.qid === selection.qid)
 
     // if (objIndex === -1) {
@@ -36,15 +53,6 @@ class Phishing_simulator extends PureComponent {
     // }
 
     // this.setState({ ...this.state, user_answers })
-
-
-    let notificationStyle = {
-      duration: 1.7,
-      placement: "bottomLeft",
-      type: "success",
-      message: `your selection is: ${item.props.text} to the question #${item.props.id}`
-    }
-    notification.success(notificationStyle)
 
   }
 
@@ -62,45 +70,48 @@ class Phishing_simulator extends PureComponent {
       { id: 9, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q9.jpg' },
       { id: 10, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q10.jpg' },
     ],
-    selectedEmail: {},
-    user_answers: []
+    selected_email: {},
+    chosen_answer: '',
+    user_answers: {}
   }
+
 
   componentDidMount() {
-    this.setState({ selectedEmail: this.state.emails[0] })
+    this.setState({ selected_email: this.state.emails[0] })
   }
-
+  // componentWillUpdate() {
+  //   console.log(this.state.user_answers)
+  // }
   componentDidUpdate() {
-    console.log(this.state.user_answers);
-     
+    let selected_email = this.state.selected_email
+    let user_selection = this.state.user_answers[selected_email.id] != null ? this.state.user_answers[selected_email.id].user_selection : 'Not_Answered'
+    this.setState({ ...this.state, chosen_answer: user_selection })
+
   }
 
   render() {
+    let chosen_answer = parseInt(this.state.chosen_answer)
+    let emailProps = {
+      id: this.state.selected_email.id,
+      sender: this.state.selected_email.sender,
+      receiver: this.state.selected_email.receiver,
+      content: this.state.selected_email.content,
+    }
+
     return (
       <Card title="Phishing Simulator" className="gx-card">
-
         <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
-        <Row>
+        <Row> 
           <Col>
-            <Email user_answer={this.handleUserAnswer} id={this.state.selectedEmail.id} sender={this.state.selectedEmail.sender} receiver={this.state.selectedEmail.receiver} content={this.state.selectedEmail.content} />
-
-            {/* {
-              this.state.emails.map(email => (
-                
-                <Email content={email.content} />
-             
-              ))
-            } */}
+          <Email user_answer={this.handleUserAnswer} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} />
           </Col>
           <Col push={4}>
             <Progress type="circle" percent={
-              (Object.keys(this.state.user_answers).length/this.state.emails.length)*100
+              (Object.keys(this.state.user_answers).length / this.state.emails.length) * 100
 
             } />
           </Col>
         </Row>
-
-
       </Card>
     )
   }
