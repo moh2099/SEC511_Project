@@ -11,7 +11,7 @@ import {
   NAV_STYLE_NO_HEADER_MINI_SIDEBAR,
   THEME_TYPE_LITE
 } from "../../constants/ThemeSetting";
-import IntlMessages from "../../util/IntlMessages";
+//import IntlMessages from "../../util/IntlMessages";
 import { useSelector } from "react-redux";
 
 //const SubMenu = Menu.SubMenu;
