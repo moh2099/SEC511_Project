@@ -69,7 +69,14 @@ class Phishing_simulator extends PureComponent {
     chosen_answer: '',
     user_answers: {}
   }
-
+/**
+ * 
+ * 
+ * You may get the images from the storage[local]
+ * 
+ * 
+ * 
+ */
 
   componentDidMount() {
     this.setState({ selected_email: this.state.emails[0] })
