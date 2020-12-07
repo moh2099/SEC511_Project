@@ -11,7 +11,7 @@ import Sidebar from "../Sidebar/index";
 // import Topbar from "../Topbar/index";
 import {footerText} from "util/config";
 import App from "routes/index";
-import Customizer from "containers/Customizer";
+//import Customizer from "containers/Customizer";
 import {useSelector} from "react-redux";
 import {
   NAV_STYLE_ABOVE_HEADER,
@@ -114,7 +114,7 @@ const MainApp = () => {
           </Footer>
         </Content>
       </Layout>
-      <Customizer/>
+      {/* <Customizer/> */}
     </Layout>
   )
 };

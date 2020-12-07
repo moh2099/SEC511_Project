@@ -24,7 +24,7 @@ class Phishing_simulator extends PureComponent {
 
           let user_answers = this.state.user_answers
           let emails = this.state.emails
-          this.validate_answers(user_answers, emails)
+          this.check_answers(user_answers, emails)
 
           swal("Your answers have been saved, please check the results!", {
             icon: "success",
@@ -35,13 +35,32 @@ class Phishing_simulator extends PureComponent {
 
   }
 
+  
 
 
-  validate_answers = (answers, emails) => {
-      console.log(answers)
-      console.log(emails)
+  check_answers = (answers, emails) => {
+    // console.log(answers)
+    // console.log(emails)
+
+    emails.map(email => {
+      if (email.id === answers[email.id].qid) { 
+        let user_answer = answers[email.id].selectedItem
+        let user_indicators = answers[email.id].indicators
+        
+        
+        console.log(email.indicators)
+        console.log(user_indicators)
+        console.log(user_answer)
+        
+      }
+      
+    })
     
+
   }
+
+
+
 
   handleChange = (selectedPage) => {
     this.setState({
@@ -53,7 +72,6 @@ class Phishing_simulator extends PureComponent {
 
   handleUserAnswer = (selection) => {
 
-    console.log(selection)
     let user_answers = this.state.user_answers
     user_answers = { ...user_answers, [selection.qid]: selection }
     this.setState({ ...this.state, user_answers, chosen_answer: selection.selectedItem })
@@ -66,8 +84,15 @@ class Phishing_simulator extends PureComponent {
     //   emails: { ...this.state.emails, allEmails}
     // })
 
-    let message_content = `You have selected: ${selection.text}`
-    message.success(message_content, 2)
+
+    if (selection.selectedItem === 1) {
+      let msg_indicators = `indicators: ${selection.indicators}`
+      message.info(msg_indicators, 5)
+    } else {
+      let message_content = `You have selected: ${selection.text}`
+      message.success(message_content, 2)
+    }
+
 
     //let objIndex = user_answers.findIndex(e => e.qid === selection.qid)
 
@@ -92,15 +117,15 @@ class Phishing_simulator extends PureComponent {
       },
       {
         id: 2, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q2.jpg',
-        indicators: { sender: true, receiver: true, content: true }
+        indicators:{ sender: true, receiver: false, content: true }
       },
       {
         id: 3, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q3.jpg',
-        indicators: { sender: false, receiver: false, content: false }
+        indicators: {}
       },
       {
         id: 4, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q4.jpg',
-        indicators: { sender: false, receiver: false, content: false }
+        indicators: {}
       },
       {
         id: 5, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q5.jpg',
