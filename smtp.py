@@ -16,8 +16,8 @@ data = {
           "Name": "xDaf"
         }
       ],
-      "Subject": "GiveMeasdPelase",
-      "TextPart": "My first Mailjet email",
+      "Subject": "Ahmed :)",
+      "TextPart": "FFASDEGGWEGWEGWEG",
       "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
       "CustomID": "AppGettingStartedTest"
     }
