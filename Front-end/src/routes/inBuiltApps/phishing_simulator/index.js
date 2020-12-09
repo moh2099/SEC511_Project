@@ -1,15 +1,69 @@
 import React, { PureComponent } from "react";
+import axios from 'axios'
 // import { Link } from "react-router-dom";
 // import IntlMessages from "../../../util/IntlMessages";
-import { Card, Col, Row, message } from 'antd';
+import { Card, Menu, Dropdown, Button, Row, Col, Progress, Checkbox, message } from 'antd';
+import { DownOutlined, SaveFilled } from '@ant-design/icons';
 // import Basic from '../../components/feedback/Progress/Basic' //default calsses which are exported as default shouldn't be imported between {}
 import { Pagination } from 'antd';
 import Email from './Email'
 import swal from 'sweetalert'
+import { array } from "prop-types";
+
+const API_KEY = "673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094";
+const inboxData = {
+  created: "2020-12-08T21:09:11.976Z",
+  createdAt: "2020-12-08T21:09:11.976Z",
+  description: null,
+  emailAddress: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
+  expiresAt: "2020-12-08T22:09:11.976655298Z",
+  favourite: false,
+  id: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85",
+  name: null,
+  tags: null,
+  userId: "8249091e-39c3-4ca6-8ca6-854d0f741bdb",
+}
+
 
 
 class Phishing_simulator extends PureComponent {
 
+  async getEmails() {
+    return await axios.get(`https://api.mailslurp.com/waitForLatestEmail?apiKey=${API_KEY}&inboxId=${inboxData.id}`)
+  }
+
+  newInbox = () => {
+
+    fetch.post(`https://api.mailslurp.com/createInbox?apiKey=${API_KEY}`)
+      .then((res) => console.log(res.data))
+
+  }
+
+
+  //  getEmails() {
+
+  //     let response = axios.get(`https://api.mailslurp.com/waitForLatestEmail?apiKey=${API_KEY}&inboxId=${inboxData.id}`)
+  //       .then( (res) =>  console.log(res.data)).finally(x => console.log(x)
+  //       )
+
+  //     return response
+  //   }
+  componentDidMount() {
+    this.setState({ selected_email: this.state.emails[0] })
+    axios.get(`https://api.mailslurp.com/emails?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
+      .then(res => this.setState({ newEmails: res.data }));
+    //this.setState({ ...this.state, newEmails: res.data })
+
+  }
+  // componentWillUpdate() {
+  //   console.log(this.state.user_answers)
+  // }
+  componentDidUpdate() {
+    let selected_email = this.state.selected_email
+    let user_selection = this.state.user_answers[selected_email.id] != null ? this.state.user_answers[selected_email.id].user_selection : 'Not_Answered'
+    this.setState({ ...this.state, chosen_answer: user_selection })
+
+  }
 
   handleSubmitAnswers = (e) => {
     e.preventDefault()
@@ -35,27 +89,25 @@ class Phishing_simulator extends PureComponent {
 
   }
 
-  
-
 
   check_answers = (answers, emails) => {
     // console.log(answers)
     // console.log(emails)
 
     emails.map(email => {
-      if (email.id === answers[email.id].qid) { 
+      if (email.id === answers[email.id].qid) {
         let user_answer = answers[email.id].selectedItem
         let user_indicators = answers[email.id].indicators
-        
-        
+
+
         console.log(email.indicators)
         console.log(user_indicators)
         console.log(user_answer)
-        
+
       }
-      
+      return ''
     })
-    
+
 
   }
 
@@ -110,6 +162,9 @@ class Phishing_simulator extends PureComponent {
 
 
   state = {
+    newEmails: [],
+    emailsList: [],
+    valid_emails: [],
     emails: [
       {
         id: 1, sender: 'asdij@aifjw.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q1.jpg',
@@ -117,7 +172,7 @@ class Phishing_simulator extends PureComponent {
       },
       {
         id: 2, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q2.jpg',
-        indicators:{ sender: true, receiver: false, content: true }
+        indicators: { sender: true, receiver: false, content: true }
       },
       {
         id: 3, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q3.jpg',
@@ -167,18 +222,24 @@ class Phishing_simulator extends PureComponent {
    * 
    */
 
-  componentDidMount() {
-    this.setState({ selected_email: this.state.emails[0] })
+  async getEmail(email_id) {
+   let email =  await axios.get(`https://api.mailslurp.com/emails/${email_id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
+     .then(res => this.setState({
+       ...this.state, selected_email: 
+        {
+          id: res.data.id, sender: res.data.from, receiver: res.data.id, content: res.data.body,
+          indicators: { sender: false, receiver: true, content: true }
+        }
+         
+         
+      }))
+    
+    
   }
-  // componentWillUpdate() {
-  //   console.log(this.state.user_answers)
-  // }
-  componentDidUpdate() {
-    let selected_email = this.state.selected_email
-    let user_selection = this.state.user_answers[selected_email.id] != null ? this.state.user_answers[selected_email.id].user_selection : 'Not_Answered'
-    this.setState({ ...this.state, chosen_answer: user_selection })
 
-  }
+
+
+
 
   render() {
     let chosen_answer = parseInt(this.state.chosen_answer)
@@ -190,12 +251,60 @@ class Phishing_simulator extends PureComponent {
       content: this.state.selected_email.content,
       indicators: this.state.selected_email.indicators
     }
+    // {
+    //   id: e.id, sender: e.from, receiver: e.to[0], content: e.body, subject: e.subject,
+    //   indicators: {}
+    // }
+
+
+    console.log(this.state.selected_email);
+ 
+    // let Emails = []
+    // let temp = {}
+    // this.state.emailListIds.map(id => {
+    //  let e = this.getEmail(id) != null ? this.getEmail(id) : ''
+    //   if (e != '' && e != null) {
+    //     temp = {
+    //       id: e.id, sender: e.from, receiver: e.to[0], content: e.body, subject: e.subject,
+    //       indicators: {}
+    //     }
+
+    //     Emails.push(temp)
+    //   }
+    // })
+
+    // if (Emails.length > 0) {
+    //   console.log(Emails)
+    // }
+
+
 
     return (
       <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           <Col>
-            <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+            <Pagination onChange={''} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+            <Dropdown overlay={
+              <Menu onClick={e => this.getEmail(e.key)} >
+                {
+                  this.state.newEmails.content != null ? (
+                    this.state.newEmails.content.map(email => { 
+                      return <Menu.Item id={email.id} key={email.id} text={email.subject} ><span>{email.subject}</span></Menu.Item>
+                    })
+                  ) : ('')
+                }
+
+              </Menu>
+
+            }>
+              <Button
+                //This is the menu item you click
+                style={{ width: 200 }}
+                className="ant-dropdown-link"
+                onClick={e => e.preventDefault()}> {'Select an email'}
+                <DownOutlined />
+              </Button>
+            </Dropdown>
             <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
           </Col>
         </Row>
