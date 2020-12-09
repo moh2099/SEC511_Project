@@ -7,22 +7,22 @@ data = {
   'Messages': [
     {
       "From": {
-        "Email": "alfy@kfupm.edu.sa",
-        "Name": "Hi "
+        "Email": "pamelen572@wncnw.com",
+        "Name": "xDaf"
       },
       "To": [
         {
           "Email": "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
-          "Name": "asdwefweqvfqwefvqcefqcef"
+          "Name": "xDaf"
         }
       ],
-      "Subject": "give me some wordst.",
+      "Subject": "GiveMeasdPelase",
       "TextPart": "My first Mailjet email",
-      "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.kfupm.com/'>qwefvqwefv</a>!</h3><br />May the delivery force be with you!",
+      "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
       "CustomID": "AppGettingStartedTest"
     }
   ]
 }
 result = mailjet.send.create(data=data)
 print(result.status_code)
-print(result.json())
+print (result.json())

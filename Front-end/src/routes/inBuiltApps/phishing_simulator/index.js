@@ -8,7 +8,7 @@ import { DownOutlined, SaveFilled } from '@ant-design/icons';
 import { Pagination } from 'antd';
 import Email from './Email'
 import swal from 'sweetalert'
-import { array } from "prop-types";
+import Mail from '../Mail/index';
 
 const API_KEY = "673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094";
 const inboxData = {
@@ -223,18 +223,18 @@ class Phishing_simulator extends PureComponent {
    */
 
   async getEmail(email_id) {
-   let email =  await axios.get(`https://api.mailslurp.com/emails/${email_id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
-     .then(res => this.setState({
-       ...this.state, selected_email: 
+    let email = await axios.get(`https://api.mailslurp.com/emails/${email_id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
+      .then(res => this.setState({
+        ...this.state, selected_email:
         {
           id: res.data.id, sender: res.data.from, receiver: res.data.id, content: res.data.body,
           indicators: { sender: false, receiver: true, content: true }
         }
-         
-         
+
+
       }))
-    
-    
+
+
   }
 
 
@@ -257,8 +257,8 @@ class Phishing_simulator extends PureComponent {
     // }
 
 
-    console.log(this.state.selected_email);
- 
+    //console.log(this.state.selected_email);
+
     // let Emails = []
     // let temp = {}
     // this.state.emailListIds.map(id => {
@@ -288,7 +288,7 @@ class Phishing_simulator extends PureComponent {
               <Menu onClick={e => this.getEmail(e.key)} >
                 {
                   this.state.newEmails.content != null ? (
-                    this.state.newEmails.content.map(email => { 
+                    this.state.newEmails.content.map(email => {
                       return <Menu.Item id={email.id} key={email.id} text={email.subject} ><span>{email.subject}</span></Menu.Item>
                     })
                   ) : ('')
@@ -305,8 +305,16 @@ class Phishing_simulator extends PureComponent {
                 <DownOutlined />
               </Button>
             </Dropdown>
-            <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
+            {/* <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} /> */}
           </Col>
+        </Row>
+        <Row style={{ marginLeft: 35, marginTop: 20, marginRight: 35 }}>
+          {
+                  this.state.newEmails.content != null ? (
+                    <Mail emails={this.state.newEmails.content} />
+                  ) : ('')
+                }
+
         </Row>
       </Card>
     )

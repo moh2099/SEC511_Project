@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Menu, Dropdown, Button, Row, Col, Progress, Checkbox } from 'antd';
 import { DownOutlined, SaveFilled } from '@ant-design/icons';
+import Mail from '../Mail/index'
 
 class Email extends Component {
     state = {
@@ -12,21 +13,21 @@ class Email extends Component {
         userSelection: {},
         //userIndicators: [],
     }
- 
+
     handleCheckedBox = (e) => {
         let tempIndicators = this.state.userSelection.indicators
 
         if (e.target.checked === true) {
             //console.log(this.state.userIndicators)
-            this.setState({ userSelection: { ...this.state.userSelection, indicators: [...tempIndicators, e.target.name] } }, () => this.props.updateUserAnswers(this.state.userSelection) )
-          //  this.setState({ ...this.state, userIndicators: [...this.state.userIndicators, e.target.name] })
+            this.setState({ userSelection: { ...this.state.userSelection, indicators: [...tempIndicators, e.target.name] } }, () => this.props.updateUserAnswers(this.state.userSelection))
+            //  this.setState({ ...this.state, userIndicators: [...this.state.userIndicators, e.target.name] })
         } else {
             let item = e.target.name
             tempIndicators = tempIndicators.filter((element) => {
                 return element !== item
             })
             //this.setState has a second parameter which is the callBack simply use () => someFunction syntax so that someFunction is executed after the state is updated, because this.setState is asynchronous function
-            this.setState({ userSelection: { ...this.state.userSelection, indicators: tempIndicators} },  () => this.props.updateUserAnswers(this.state.userSelection) )
+            this.setState({ userSelection: { ...this.state.userSelection, indicators: tempIndicators } }, () => this.props.updateUserAnswers(this.state.userSelection))
         }
     }
 
@@ -36,14 +37,14 @@ class Email extends Component {
             selectedItem: parseInt(item.props.eventKey),
             text: item.props.text,
             indicators: []
-          }
-          this.setState({ userSelection: selection })
+        }
+        this.setState({ userSelection: selection })
         if (selection.selectedItem === 1) { // 'phishing email
             this.setState({ showIndicatorsMenu: true })
         } else {
             this.setState({ showIndicatorsMenu: false })
             this.props.updateUserAnswers(selection)
-         }
+        }
     }
 
     get_selected_answerTitles = (selection) => {
@@ -109,7 +110,9 @@ class Email extends Component {
                         }
                     </Row>
                     <Row style={{ marginTop: 10 }}>
-                        <img alt="Error404_image_not_found" width={550} src={this.props.content} />
+                        {/* <img alt={this.props.content} width={550} src={this.props.content} />
+                        <iframe width={550} >{this.props.content}</iframe> */}
+                        <Mail />
                     </Row>
                 </Col>
 
