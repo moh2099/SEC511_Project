@@ -451,14 +451,27 @@ class Mail extends PureComponent {
   constructor(props) {
     super();
     let tempMails = []
- 
+
     if (props.emails_bodies != null) {
       props.emails_bodies.map(e => {
-        
+        console.log(e);
+        let date = new Date(e.createdAt);
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let dt = date.getDate();
+
+
+        if (dt < 10) {
+          dt = '0' + dt;
+        }
+        if (month < 10) {
+          month = '0' + month;
+        }
+
         let temp = {
           'id': e.id,
           'from': {
-            'name': 'Domnic Brown',
+            'name': e.from,
             'avatar': "https://via.placeholder.com/150x150",
             'email': e.from
           },
@@ -470,7 +483,7 @@ class Mail extends PureComponent {
           ],
           'subject': e.subject,
           'message': e.body,
-          'time': '1 Dec',
+          'time': year+'-' + month + '-'+dt,
           'read': false,
           'starred': false,
           'important': false,
@@ -485,8 +498,8 @@ class Mail extends PureComponent {
       })
     }
 
-    
-    
+
+
 
 
 
@@ -519,7 +532,7 @@ class Mail extends PureComponent {
     setTimeout(() => {
       this.setState({ loader: false });
     }, 1500);
- 
+
   }
 
 

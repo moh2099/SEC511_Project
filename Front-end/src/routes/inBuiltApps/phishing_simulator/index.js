@@ -310,7 +310,7 @@ class Phishing_simulator extends PureComponent {
           {
             this.state.newEmails.content != null ? (
               this.state.emails_with_body.length == this.state.newEmails.content.length ? (
-                <Mail emails={this.state.newEmails.content} emails_bodies={this.state.emails_with_body} />
+                <Mail emails_bodies={this.state.emails_with_body} />
               ): ('')
             ) : ('')
           }
