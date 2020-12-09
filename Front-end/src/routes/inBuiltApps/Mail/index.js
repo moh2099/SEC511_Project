@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { Button, Checkbox, Drawer, Dropdown, Menu, message } from "antd";
 import CustomScrollbars from "util/CustomScrollbars";
 
-import mails from "./data/mails";
+//import mails from "./data/mails";
 import folders from "./data/folders";
 import filters from "./data/filters";
 import labels from "./data/labels";
@@ -14,10 +14,23 @@ import MailDetail from "components/mail/MailDetail/index";
 import IntlMessages from "util/IntlMessages";
 import CircularProgress from "../../../components/CircularProgress/index";
 import Auxiliary from "../../../util/Auxiliary";
-
+import axios from 'axios'
+const API_KEY = "673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094";
+const inboxData = {
+  created: "2020-12-08T21:09:11.976Z",
+  createdAt: "2020-12-08T21:09:11.976Z",
+  description: null,
+  emailAddress: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
+  expiresAt: "2020-12-08T22:09:11.976655298Z",
+  favourite: false,
+  id: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85",
+  name: null,
+  tags: null,
+  userId: "8249091e-39c3-4ca6-8ca6-854d0f741bdb",
+}
 
 class Mail extends PureComponent {
- 
+
   MailSideBar = () => {
     return <div className="gx-module-side">
 
@@ -438,13 +451,14 @@ class Mail extends PureComponent {
   constructor(props) {
     super();
     let tempMails = []
-
-    if (props.emails != null) {
-      props.emails.map(e => {
+ 
+    if (props.emails_bodies != null) {
+      props.emails_bodies.map(e => {
+        
         let temp = {
           'id': e.id,
           'from': {
-            'name': 'Domnic Harris',
+            'name': 'Domnic Brown',
             'avatar': "https://via.placeholder.com/150x150",
             'email': e.from
           },
@@ -456,25 +470,28 @@ class Mail extends PureComponent {
           ],
           'subject': e.subject,
           'message': e.body,
-          'read': true,
+          'time': '1 Dec',
+          'read': false,
           'starred': false,
           'important': false,
           'hasAttachments': false,
-          'labels': [
-            3,
-            2
-          ],
+          'labels': [],
           'selected': false,
           'folder': 0
         }
-        
+
         tempMails.push(temp)
 
       })
     }
-      
+
     
+    
+
+
+
     this.state = {
+      selected_email: {},
       searchMail: '',
       noContentFoundMessage: 'No Mail found in selected folder',
       alertMessage: '',
@@ -495,14 +512,14 @@ class Mail extends PureComponent {
       composeMail: false,
       folderMails: tempMails.filter(mail => mail.folder === 0)
     }
- 
+
   }
 
   componentDidMount() {
     setTimeout(() => {
       this.setState({ loader: false });
     }, 1500);
-    
+ 
   }
 
 
@@ -584,6 +601,7 @@ class Mail extends PureComponent {
   }
 
   onMailSelect(mail) {
+
     this.setState({
       loader: true,
       currentMail: mail,
@@ -601,12 +619,10 @@ class Mail extends PureComponent {
     }
     return mail.labels.concat(label)
   }
- 
- 
+
+
   render() {
 
-    console.log(this.state);
-    
     const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
     return (
 

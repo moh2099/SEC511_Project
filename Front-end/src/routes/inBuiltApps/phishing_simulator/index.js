@@ -48,11 +48,26 @@ class Phishing_simulator extends PureComponent {
 
   //     return response
   //   }
+  //emails_with_body
   componentDidMount() {
     this.setState({ selected_email: this.state.emails[0] })
     axios.get(`https://api.mailslurp.com/emails?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
-      .then(res => this.setState({ newEmails: res.data }));
-    //this.setState({ ...this.state, newEmails: res.data })
+      .then(res => {
+        res.data.content.map(e => {
+          axios.get(`https://api.mailslurp.com/emails/${e.id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
+            .then(email => {
+              let email_body = email.data
+              //Object.assign(e, { 'Body': JSON.stringify(email.data.body) });
+              //e.body = body
+              let ex = this.state.emails_with_body
+              this.setState({ ...this.state, emails_with_body: [...this.state.emails_with_body, email_body] })
+              
+            })
+        })
+        this.setState({ ...this.state, newEmails: res.data })
+      })
+
+
 
   }
   // componentWillUpdate() {
@@ -163,7 +178,7 @@ class Phishing_simulator extends PureComponent {
 
   state = {
     newEmails: [],
-    emailsList: [],
+    emails_with_body: [],
     valid_emails: [],
     emails: [
       {
@@ -222,24 +237,6 @@ class Phishing_simulator extends PureComponent {
    * 
    */
 
-  async getEmail(email_id) {
-    let email = await axios.get(`https://api.mailslurp.com/emails/${email_id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
-      .then(res => this.setState({
-        ...this.state, selected_email:
-        {
-          id: res.data.id, sender: res.data.from, receiver: res.data.id, content: res.data.body,
-          indicators: { sender: false, receiver: true, content: true }
-        }
-
-
-      }))
-
-
-  }
-
-
-
-
 
   render() {
     let chosen_answer = parseInt(this.state.chosen_answer)
@@ -278,12 +275,13 @@ class Phishing_simulator extends PureComponent {
     // }
 
 
+    //console.log(this.state);
 
     return (
       <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           <Col>
-            <Pagination onChange={''} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+            <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
             <Dropdown overlay={
               <Menu onClick={e => this.getEmail(e.key)} >
                 {
@@ -310,10 +308,12 @@ class Phishing_simulator extends PureComponent {
         </Row>
         <Row style={{ marginLeft: 35, marginTop: 20, marginRight: 35 }}>
           {
-                  this.state.newEmails.content != null ? (
-                    <Mail emails={this.state.newEmails.content} />
-                  ) : ('')
-                }
+            this.state.newEmails.content != null ? (
+              this.state.emails_with_body.length == this.state.newEmails.content.length ? (
+                <Mail emails={this.state.newEmails.content} emails_bodies={this.state.emails_with_body} />
+              ): ('')
+            ) : ('')
+          }
 
         </Row>
       </Card>
