@@ -13,12 +13,12 @@ data = {
       "To": [
         {
           "Email": "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
-          "Name": "testingxD"
+          "Name": "asdwefweqvfqwefvqcefqcef"
         }
       ],
       "Subject": "give me some wordst.",
       "TextPart": "My first Mailjet email",
-      "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.xDasdasdwefvqwefvqwefvqwevf.com/'>qwefvqwefv</a>!</h3><br />May the delivery force be with you!",
+      "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.kfupm.com/'>qwefvqwefv</a>!</h3><br />May the delivery force be with you!",
       "CustomID": "AppGettingStartedTest"
     }
   ]
