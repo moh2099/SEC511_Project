@@ -3,6 +3,7 @@ import os
 api_key = '1fca83c777766837f1c83e91beb5a1f2'
 api_secret = '79c3a4946a57bf3012304f9f0b29134a'
 mailjet = Client(auth=(api_key, api_secret), version='v3.1')
+html = '<h1>TestHrml</h1>'
 data = {
   'Messages': [
     {
@@ -16,9 +17,9 @@ data = {
           "Name": "xDaf"
         }
       ],
-      "Subject": "Ahmed :)",
-      "TextPart": "FFASDEGGWEGWEGWEG",
-      "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
+      "Subject": "KFUPM",
+      "TextPart": "TestingThephishing",
+      "HTMLPart": html,
       "CustomID": "AppGettingStartedTest"
     }
   ]

@@ -1,7 +1,9 @@
 import React, { PureComponent } from "react";
-import { Button, Checkbox, Drawer, Dropdown, Menu, message } from "antd";
+import { Button, Checkbox, Progress, Dropdown, Menu, message } from "antd";
+import { SaveFilled } from '@ant-design/icons';
 import CustomScrollbars from "util/CustomScrollbars";
-
+import randomEmail from 'random-email'
+import random_name from 'node-random-name'
 //import mails from "./data/mails";
 import folders from "./data/folders";
 import filters from "./data/filters";
@@ -391,9 +393,11 @@ class Mail extends PureComponent {
             {noContentFoundMessage}
           </div>
           :
+
           <MailList mails={folderMails} onStartSelect={this.onStartSelect.bind(this)}
             onMailSelect={this.onMailSelect.bind(this)}
-            onMailChecked={this.onMailChecked.bind(this)} />
+            onMailChecked={this.onMailChecked.bind(this)}
+            handleUserSelection={this.handleUserSelection.bind(this)} />
         :
         <MailDetail mail={currentMail} onStartSelect={this.onStartSelect.bind(this)}
           onImportantSelect={this.onImportantSelect.bind(this)} />}
@@ -454,7 +458,6 @@ class Mail extends PureComponent {
 
     if (props.emails_bodies != null) {
       props.emails_bodies.map(e => {
-        console.log(e);
         let date = new Date(e.createdAt);
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
@@ -471,36 +474,33 @@ class Mail extends PureComponent {
         let temp = {
           'id': e.id,
           'from': {
-            'name': e.from,
+            'name': random_name(),
             'avatar': "https://via.placeholder.com/150x150",
-            'email': e.from
+            'email': randomEmail()
           },
           'to': [
             {
-              'name': 'me',
-              'email': e.to[0]
+              'name': random_name(),
+              'email': randomEmail()
             }
           ],
           'subject': e.subject,
           'message': e.body,
-          'time': year+'-' + month + '-'+dt,
+          'time': year + '-' + month + '-' + dt,
           'read': false,
           'starred': false,
           'important': false,
           'hasAttachments': false,
           'labels': [],
           'selected': false,
-          'folder': 0
+          'folder': 0,
+          'isPhishing': Math.random() < 0.4
         }
 
         tempMails.push(temp)
 
       })
     }
-
-
-
-
 
 
     this.state = {
@@ -520,12 +520,31 @@ class Mail extends PureComponent {
         email: 'robert@example.com',
         avatar: "https://via.placeholder.com/150x150"
       },
+      user_answers: [],
       selectedMails: 0,
       selectedFolder: 0,
       composeMail: false,
       folderMails: tempMails.filter(mail => mail.folder === 0)
     }
 
+  }
+  handleUserSelection = (e) => {
+
+    let userSelection = { id: e.target.id, value: e.target.attributes.value.nodeValue, text: e.target.attributes.text.nodeValue, subject: e.target.attributes.subject.nodeValue }
+    let updated_user_answers = this.state.user_answers
+    updated_user_answers.push(userSelection)
+    updated_user_answers = [...new Map(updated_user_answers.map(item => [item['id'], item])).values()]
+
+    let emails = this.state.allMail
+    emails.map(e => { 
+      if (e.id == userSelection.id) {
+        e.labels.push(3)
+      }
+    })
+    this.setState({ ...this.state, allMail: emails, user_answers: updated_user_answers })
+    console.log(this.state.allMail);
+    
+    message.success('You have selected: ' + userSelection.text, 2)
   }
 
   componentDidMount() {
@@ -635,6 +654,7 @@ class Mail extends PureComponent {
 
 
   render() {
+    let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.allMail.length) * 100
 
     const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
     return (
@@ -669,23 +689,27 @@ class Mail extends PureComponent {
             </div> */}
 
             <div className="gx-module-box-content">
+              <Progress strokeColor="#cb42f5" style={{ marginBottom: 15 }} percent={progress_circle_size} />
               <div className="gx-module-box-topbar">
                 {this.state.currentMail === null ?
                   <div className="gx-flex-row gx-align-items-center">
                     {this.state.folderMails.length > 0 ?
-                      <Auxiliary>
-                        {/* <Checkbox color="primary" className="gx-icon-btn"
-                                  indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
-                                  checked={selectedMails > 0}
-                                  onChange={this.onAllMailSelect.bind(this)}
-                                  value="SelectMail"/> */}
+                      progress_circle_size === 100 ? (
+                        <Button type="danger" shape="round" onClick={''}> <SaveFilled />Submit</Button>
+                      ) : null
+                      // <Auxiliary>
+                      //   {/* <Checkbox color="primary" className="gx-icon-btn"
+                      //             indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
+                      //             checked={selectedMails > 0}
+                      //             onChange={this.onAllMailSelect.bind(this)}
+                      //             value="SelectMail"/> */}
 
-                        <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
-                          <div>
-                            <span className="gx-px-2"> {this.state.optionName}</span>
-                            <i className="icon icon-charvlet-down" /></div>
-                        </Dropdown>
-                      </Auxiliary>
+                      //   <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
+                      //     <div>
+                      //       <span className="gx-px-2"> {this.state.optionName}</span>
+                      //       <i className="icon icon-charvlet-down" /></div>
+                      //   </Dropdown>
+                      // </Auxiliary>
                       : null}
                   </div>
                   :

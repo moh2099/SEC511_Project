@@ -19,8 +19,20 @@ export default [
   },
   {
     'id': 3,
-    'handle': 'amazon',
-    'title': 'Clients',
+    'handle': 'answered',
+    'title': 'Answered',
     'color': 'light-blue'
+  },
+  {
+    'id': 4,
+    'handle': 'Real',
+    'title': 'Real Email',
+    'color': 'green'
+  },
+  {
+    'id': 5,
+    'handle': 'Phishing',
+    'title': 'Phishing Email',
+    'color': 'Red'
   }
 ];

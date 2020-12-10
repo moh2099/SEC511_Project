@@ -280,8 +280,8 @@ class Phishing_simulator extends PureComponent {
     return (
       <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
-          <Col>
-            <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+          {/* <Col> */}
+            {/* <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
             <Dropdown overlay={
               <Menu onClick={e => this.getEmail(e.key)} >
                 {
@@ -294,19 +294,19 @@ class Phishing_simulator extends PureComponent {
 
               </Menu>
 
-            }>
-              <Button
+            }> */}
+              {/* <Button
                 //This is the menu item you click
                 style={{ width: 200 }}
                 className="ant-dropdown-link"
                 onClick={e => e.preventDefault()}> {'Select an email'}
                 <DownOutlined />
               </Button>
-            </Dropdown>
+            </Dropdown> */}
             {/* <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} /> */}
-          </Col>
+          {/* </Col> */}
         </Row>
-        <Row style={{ marginLeft: 35, marginTop: 20, marginRight: 35 }}>
+        <Row style={{ marginLeft: 35, marginTop: 20}}>
           {
             this.state.newEmails.content != null ? (
               this.state.emails_with_body.length == this.state.newEmails.content.length ? (
