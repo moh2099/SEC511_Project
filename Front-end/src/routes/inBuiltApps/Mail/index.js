@@ -15,21 +15,8 @@ import ComposeMail from "components/mail/Compose/index";
 import MailDetail from "components/mail/MailDetail/index";
 import IntlMessages from "util/IntlMessages";
 import CircularProgress from "../../../components/CircularProgress/index";
-import Auxiliary from "../../../util/Auxiliary";
-import axios from 'axios'
-const API_KEY = "673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094";
-const inboxData = {
-  created: "2020-12-08T21:09:11.976Z",
-  createdAt: "2020-12-08T21:09:11.976Z",
-  description: null,
-  emailAddress: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
-  expiresAt: "2020-12-08T22:09:11.976655298Z",
-  favourite: false,
-  id: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85",
-  name: null,
-  tags: null,
-  userId: "8249091e-39c3-4ca6-8ca6-854d0f741bdb",
-}
+import swal from 'sweetalert'
+
 
 class Mail extends PureComponent {
 
@@ -542,9 +529,52 @@ class Mail extends PureComponent {
       }
     })
     this.setState({ ...this.state, allMail: emails, user_answers: updated_user_answers })
-    console.log(this.state.allMail);
     
     message.success('You have selected: ' + userSelection.text, 2)
+  }
+
+  handleSubmit = (e) => { 
+    e.preventDefault()
+    swal({
+      title: "Confirmation",
+      text: "Are you sure you want to submit your answers?",
+      icon: "info",
+      buttons: true,
+    })
+      .then((decision) => {
+        if (decision) {
+
+          let user_answers = this.state.user_answers
+          let emails = this.state.emails
+          this.check_answers(user_answers, emails)
+
+          swal("Your answers have been saved, please check the results!", {
+            icon: "success",
+          })
+
+        }
+      })
+  }
+
+  check_answers = (answers, emails) => {
+     console.log(answers)
+     console.log(emails)
+
+    // emails.map(email => {
+    //   if (email.id === answers[email.id].qid) {
+    //     let user_answer = answers[email.id].selectedItem
+    //     let user_indicators = answers[email.id].indicators
+
+
+    //     console.log(email.indicators)
+    //     console.log(user_indicators)
+    //     console.log(user_answer)
+
+    //   }
+    //   return ''
+    // })
+
+
   }
 
   componentDidMount() {
@@ -695,7 +725,7 @@ class Mail extends PureComponent {
                   <div className="gx-flex-row gx-align-items-center">
                     {this.state.folderMails.length > 0 ?
                       progress_circle_size === 100 ? (
-                        <Button type="danger" shape="round" onClick={''}> <SaveFilled />Submit</Button>
+                        <Button type="danger" shape="round" onClick={this.handleSubmit}> <SaveFilled />Submit</Button>
                       ) : null
                       // <Auxiliary>
                       //   {/* <Checkbox color="primary" className="gx-icon-btn"
