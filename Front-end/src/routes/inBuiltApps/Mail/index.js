@@ -509,6 +509,7 @@ class Mail extends PureComponent {
       },
       user_answers: [],
       isPhishing: Math.random() < 0.4,
+      result:[],
       selectedMails: 0,
       selectedFolder: 0,
       composeMail: false,
@@ -547,11 +548,11 @@ class Mail extends PureComponent {
 
           let user_answers = this.state.user_answers
           let emails = this.state.allMail
-          let results = this.check_answers(user_answers, emails)
-          console.log('Correct answers are: ' + results[0] + ' out of ' + results[1])
-          let percentage = (results[0] / results[1]) * 100
+          let result = this.check_answers(user_answers, emails)
+          this.setState({...this.state, result })
+          let percentage = (result[0] / result[1]) * 100
           if (percentage > 75) {
-            swal(`You have scored ${percentage}%`, {
+            swal(`Congratulation! You have scored ${percentage}%`, {
               icon: "success",
             })
           } else { 
