@@ -76,8 +76,8 @@ const MailListItem = ({ mail, onMailSelect, onMailChecked, onStartSelect, handle
       <span className="gx-toolbar-separator">&nbsp;&nbsp;</span>
 
       <div key={mail.id} className="gx-labels">
-        <div className={`gx-badge gx-text-white gx-bg-green`}><span id={mail.id} subject={mail.subject} value={1} text={'Real'} onClick={(e) => handleUserSelection(e)}>Real</span></div>
-        <div className={`gx-badge gx-text-white gx-bg-red`}><span id={mail.id} subject={mail.subject} value={2} text={'Phishing'} onClick={(e) => handleUserSelection(e)} >Phishing</span></div>
+        <div className={`gx-badge gx-text-white gx-bg-green`}><span id={mail.id} subject={mail.subject} value={0} text={'Real'} onClick={(e) => handleUserSelection(e)}>Real</span></div>
+        <div className={`gx-badge gx-text-white gx-bg-red`}><span id={mail.id} subject={mail.subject} value={1} text={'Phishing'} onClick={(e) => handleUserSelection(e)} >Phishing</span></div>
       </div>
 
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Dropdown, Menu } from "antd";
+import { Tag, Avatar, Dropdown, Menu } from "antd";
 import CustomScrollbars from 'util/CustomScrollbars'
 
 import labels from "routes/inBuiltApps/Mail/data/labels";
@@ -62,13 +62,14 @@ class MailDetail extends React.Component {
                 <div onClick={() => {
                   onStartSelect(mail);
                 }}>
-                  {mail.starred ?
-                    <i className="icon icon-star gx-icon-btn" /> :
-                    <i className="icon icon-star-o gx-icon-btn" />
+                  {mail.isPhishing ?
+                    <Tag color="orange">This is a Phishing email</Tag>
+                    :
+                    <Tag color="green">This is a Real email</Tag>
                   }
 
                 </div>
-                <div onClick={() => {
+                {/* <div onClick={() => {
                   onImportantSelect(mail);
                 }}>
 
@@ -76,7 +77,7 @@ class MailDetail extends React.Component {
                     <i className="icon icon-important gx-icon-btn" />
                     : <i className="icon icon-important-o gx-icon-btn" />
                   }
-                </div>
+                </div> */}
               </div>
 
             </div>

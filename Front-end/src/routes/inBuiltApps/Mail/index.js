@@ -508,6 +508,7 @@ class Mail extends PureComponent {
         avatar: "https://via.placeholder.com/150x150"
       },
       user_answers: [],
+      isPhishing: Math.random() < 0.4,
       selectedMails: 0,
       selectedFolder: 0,
       composeMail: false,
@@ -545,36 +546,41 @@ class Mail extends PureComponent {
         if (decision) {
 
           let user_answers = this.state.user_answers
-          let emails = this.state.emails
-          this.check_answers(user_answers, emails)
+          let emails = this.state.allMail
+          let results = this.check_answers(user_answers, emails)
+          console.log('Correct answers are: ' + results[0] + ' out of ' + results[1])
+          let percentage = (results[0] / results[1]) * 100
+          if (percentage > 75) {
+            swal(`You have scored ${percentage}%`, {
+              icon: "success",
+            })
+          } else { 
+            swal(`You have scored less than 75%, Please try again!`, {
+              icon: "warning",
+            })
+          }
 
-          swal("Your answers have been saved, please check the results!", {
-            icon: "success",
-          })
 
         }
       })
   }
 
   check_answers = (answers, emails) => {
-     console.log(answers)
-     console.log(emails)
+    // console.log(answers)
+    // console.log(emails)
+    let count = 0
+    emails.map(e => {
+        //console.log(e.id, e.isPhishing);
+      let user_ans = answers.find(ans => ans.id === e.id).value
+      //console.log(answers.find(ans => ans.id === e.id).value)
+      if (e.isPhishing == false && user_ans == 0 || e.isPhishing == true && user_ans == 1) {
+        count++
+      }
+    })
 
-    // emails.map(email => {
-    //   if (email.id === answers[email.id].qid) {
-    //     let user_answer = answers[email.id].selectedItem
-    //     let user_indicators = answers[email.id].indicators
-
-
-    //     console.log(email.indicators)
-    //     console.log(user_indicators)
-    //     console.log(user_answer)
-
-    //   }
-    //   return ''
-    // })
-
-
+    let results = [ count, emails.length]
+    return results
+     
   }
 
   componentDidMount() {
