@@ -54,14 +54,14 @@ class Phishing_simulator extends PureComponent {
     axios.get(`https://api.mailslurp.com/emails?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
       .then(res => {
         res.data.content.map(e => {
-          axios.get(`https://api.mailslurp.com/emails/${e.id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=ASC&unreadOnly=false`)
+          axios.get(`https://api.mailslurp.com/emails/${e.id}?apiKey=${API_KEY}&inboxId=${inboxData.id}&page=0&size=100&sort=DESC&unreadOnly=false`)
             .then(email => {
               let email_body = email.data
               //Object.assign(e, { 'Body': JSON.stringify(email.data.body) });
               //e.body = body
               let ex = this.state.emails_with_body
               this.setState({ ...this.state, emails_with_body: [...this.state.emails_with_body, email_body] })
-              
+
             })
         })
         this.setState({ ...this.state, newEmails: res.data })
@@ -226,7 +226,7 @@ class Phishing_simulator extends PureComponent {
 
     selected_email: {},
     chosen_answer: '',
-    user_answers: {}
+    user_answers: {},
   }
   /**
    * 
@@ -281,7 +281,7 @@ class Phishing_simulator extends PureComponent {
       <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           {/* <Col> */}
-            {/* <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
+          {/* <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
             <Dropdown overlay={
               <Menu onClick={e => this.getEmail(e.key)} >
                 {
@@ -295,7 +295,7 @@ class Phishing_simulator extends PureComponent {
               </Menu>
 
             }> */}
-              {/* <Button
+          {/* <Button
                 //This is the menu item you click
                 style={{ width: 200 }}
                 className="ant-dropdown-link"
@@ -303,15 +303,15 @@ class Phishing_simulator extends PureComponent {
                 <DownOutlined />
               </Button>
             </Dropdown> */}
-            {/* <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} /> */}
+          {/* <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} /> */}
           {/* </Col> */}
         </Row>
-        <Row style={{ marginLeft: 35, marginTop: 20}}>
+        <Row style={{ marginLeft: 35, marginTop: 20 }}>
           {
             this.state.newEmails.content != null ? (
               this.state.emails_with_body.length == this.state.newEmails.content.length ? (
                 <Mail emails_bodies={this.state.emails_with_body} />
-              ): ('')
+              ) : ('')
             ) : ('')
           }
 

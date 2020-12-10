@@ -98,7 +98,9 @@ const SidebarContent = () => {
               <Menu.Item key="in-built-apps/phishing_simulator">
                 <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-email" /><span>Phishing Simulator</span></Link>
               </Menu.Item>
-
+              <Menu.Item key="in-built-apps/phishing_test">
+                <Link to="/in-built-apps/phishing_test"><i className="icon icon-email" /><span>Phishing Test</span></Link>
+              </Menu.Item>
 
               {/* <Menu.Item key="in-built-apps/mail">
                 <Link to="/in-built-apps/mail"><i className="icon icon-email" /><span><IntlMessages
