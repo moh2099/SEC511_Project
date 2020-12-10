@@ -41,6 +41,7 @@ class Email extends Component {
         if (selection.selectedItem === 1) { // 'phishing email
             this.setState({ showIndicatorsMenu: true })
         } else {
+            this.setState({ showIndicatorsMenu: false })
             this.props.updateUserAnswers(selection)
          }
     }
