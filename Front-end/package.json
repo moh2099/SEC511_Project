@@ -42,6 +42,7 @@
     "react-instantsearch": "^6.8.2",
     "react-instantsearch-dom": "^6.8.2",
     "react-intl": "^3.12.1",
+    "react-modal-video": "^1.2.6",
     "react-notifications": "^1.7.2",
     "react-placeholder": "^3.0.2",
     "react-redux": "^7.2.2",

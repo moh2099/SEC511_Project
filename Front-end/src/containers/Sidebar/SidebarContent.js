@@ -96,13 +96,13 @@ const SidebarContent = () => {
               title={"Apps"}>
 
               <Menu.Item key="in-built-apps/phishing_simulator">
-                <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-email" /><span>Phishing Simulator</span></Link>
+                <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-select" /><span>Phishing Simulator</span></Link>
               </Menu.Item>
               <Menu.Item key="in-built-apps/phishing_test">
                 <Link to="/in-built-apps/phishing_test"><i className="icon icon-email" /><span>Phishing Test</span></Link>
               </Menu.Item>
               <Menu.Item key="in-built-apps/helping_material">
-                <Link to="/in-built-apps/helping_material"><i className="icon icon-email" /><span>Helping Material</span></Link>
+                <Link to="/in-built-apps/helping_material"><i className="icon icon-attachment " /><span>Helping Material</span></Link>
               </Menu.Item>
               {/* <Menu.Item key="in-built-apps/mail">
                 <Link to="/in-built-apps/mail"><i className="icon icon-email" /><span><IntlMessages
