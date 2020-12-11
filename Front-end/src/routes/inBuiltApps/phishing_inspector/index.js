@@ -26,7 +26,7 @@ const inboxData = {
 
 
 
-class Phishing_simulator extends PureComponent {
+class Phishing_inspector extends PureComponent {
 
   async getEmails() {
     return await axios.get(`https://api.mailslurp.com/waitForLatestEmail?apiKey=${API_KEY}&inboxId=${inboxData.id}`)
@@ -278,7 +278,7 @@ class Phishing_simulator extends PureComponent {
     //console.log(this.state);
 
     return (
-      <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
+      <Card title="Phishing Inspector" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           {/* <Col> */}
           {/* <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
@@ -321,4 +321,4 @@ class Phishing_simulator extends PureComponent {
   }
 }
 
-export default Phishing_simulator;
+export default Phishing_inspector;

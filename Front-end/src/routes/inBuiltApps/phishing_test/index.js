@@ -222,11 +222,11 @@ class Phishing_test extends PureComponent {
     }
 
     return (
-      <Card title="Phishing Simulator" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
+      <Card title="Phishing Test" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           <Col>
             <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
-            <Email onRef={ref => (this.child = ref)} showIndicatorMenu={false} updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
+            <Email onRef={ref => (this.child = ref)} showIndicatorMenu={false} updateUserAnswers={  this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
           </Col>
         </Row>
       </Card>

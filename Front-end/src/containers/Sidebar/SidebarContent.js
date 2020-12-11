@@ -95,8 +95,8 @@ const SidebarContent = () => {
             <MenuItemGroup key="in-built-apps" className="gx-menu-group"
               title={"Apps"}>
 
-              <Menu.Item key="in-built-apps/phishing_simulator">
-                <Link to="/in-built-apps/phishing_simulator"><i className="icon icon-select" /><span>Phishing Simulator</span></Link>
+              <Menu.Item key="in-built-apps/phishing_inspector">
+                <Link to="/in-built-apps/phishing_inspector"><i className="icon icon-select" /><span>Phishing Inspector</span></Link>
               </Menu.Item>
               <Menu.Item key="in-built-apps/phishing_test">
                 <Link to="/in-built-apps/phishing_test"><i className="icon icon-email" /><span>Phishing Test</span></Link>
