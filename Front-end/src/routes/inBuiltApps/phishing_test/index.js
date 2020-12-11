@@ -38,7 +38,7 @@ class Phishing_test extends PureComponent {
               buttons: true
             }).then((decision) => { 
               if (decision) { 
-                this.props.history.push('/in-built-apps/helping_material/helping_material')
+                this.props.history.push('/in-built-apps/helping_material')
               }
             })
           } 
@@ -141,15 +141,15 @@ class Phishing_test extends PureComponent {
     emails: [
       {
         id: 1, sender: 'asdij@aifjw.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q1.jpg',
-        indicators: ["Sender", "Receiver", "Content"]
+        indicators: ["Sender"]
       },
       {
         id: 2, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q2.jpg',
-        indicators: ["Sender", "Content"]
+        indicators: ["Sender", "Receiver"]
       },
       {
         id: 3, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q3.jpg',
-        indicators: []
+        indicators: ["Sender", "Receiver", "Content"]
       },
       {
         id: 4, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q4.jpg',
@@ -159,14 +159,14 @@ class Phishing_test extends PureComponent {
         id: 5, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q5.jpg',
         indicators: []
       },
-      // {
-      //   id: 6, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q6.jpg',
-      //   indicators: { sender: true, receiver: false, content: true }
-      // },
-      // {
-      //   id: 7, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q7.jpg',
-      //   indicators: { sender: false, receiver: false, content: true }
-      // },
+      {
+        id: 6, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q6.jpg',
+        indicators: []
+      },
+      {
+        id: 7, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q7.jpg',
+        indicators: ["Sender", "Receiver", "Content"]
+      },
       // {
       //   id: 8, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q8.jpg',
       //   indicators: { sender: true, receiver: false, content: true }
