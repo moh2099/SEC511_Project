@@ -19,8 +19,8 @@ export default [
   },
   {
     'id': 3,
-    'handle': 'answered',
-    'title': 'Answered',
+    'handle': 'INSPECTED',
+    'title': 'INSPECTED',
     'color': 'light-blue'
   },
   {
