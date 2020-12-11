@@ -12,21 +12,40 @@ class Helping_material extends PureComponent {
 
     state = {
         isOpen: false,
+        selected_yt: '',
+        yt_videos_ids: ['XsOWczwRVuc', 'zflsg6TRuos', 'Y7zNlEMDmI4', 'i0iLy8racHI', 'i_u0Si86NsU']
     }
 
-    showModal = () => {
+    showModal = (yt_id) => {
         this.setState({
             isOpen: true,
+            selected_yt: yt_id
         });
     };
 
     render() {
-        let width = 800
-        let height = 450
         return (
             <Card title="Helping Material" className="gx-card">  {/**  style={{marginLeft: 230, width: 750}}  */}
-                <Button type="primary" onClick={this.showModal}> Open Video</Button>
-                <ModalVideo width={width} height={height} channel='youtube' onClose={() => this.setState({isOpen: false})} isOpen={this.state.isOpen} videoId='XsOWczwRVuc' /> {/** the width and height props were added toModalVido component manully, they were not exist, you may check the repo in moh2099/react-modal-video */}
+                <Row style={{ margin: 50, marginTop: 10 }}>
+                    {
+                        this.state.yt_videos_ids.map(yt_id => {
+                            return (
+                                <Col >
+                                    <img
+                                        style={{ margin: 20 , borderRadius: '5%' }}
+                                        onClick={() => this.showModal(yt_id)}
+                                        width={300}
+                                        src={`https://img.youtube.com/vi/${yt_id}/maxresdefault.jpg`}
+                                    ></img>
+
+                                </Col>
+                            )
+
+                        })
+                    }
+                    <ModalVideo width={800} height={450} channel='youtube' onClose={() => this.setState({ isOpen: false })} isOpen={this.state.isOpen} videoId={this.state.selected_yt} />  {/** the width and height props were added toModalVido component manully, they were not exist, you may check the repo in moh2099/react-modal-video */}
+
+                </Row>
             </Card>
         )
     }
