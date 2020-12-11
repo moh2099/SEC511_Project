@@ -24,23 +24,70 @@ class Phishing_test extends PureComponent {
 
           let user_answers = this.state.user_answers
           let emails = this.state.emails
-          this.validate_answers(user_answers, emails)
-
-          swal("Your answers have been saved, please check the results!", {
-            icon: "success",
-          })
+          let result = this.validate_answers(user_answers, emails)
+          this.setState({...this.state, result })
+          let percentage = (result[0] / result[1]) * 100
+          if (percentage > 75) {
+            swal(`Congratulation! You have scored ${percentage}%`, {
+              icon: "success",
+            })
+          } else {
+            console.log('you have scored: ' + percentage)
+            swal(`You have scored less than 75%, Please try again!`, {
+              icon: "warning",
+            })
+          } 
 
         }
       })
 
   }
 
-
+  isEqual(a, b) {
+    // if length is not equal 
+    if (a.length != b.length)
+      return false;
+    else {
+      // comapring each element of array 
+      for (var i = 0; i < a.length; i++)
+        if (a[i] != b[i])
+          return false;
+      return true;
+    }
+  }
 
   validate_answers = (answers, emails) => {
-      console.log(answers)
-      console.log(emails)
-    
+    //console.log(answers);
+    let count = 0
+    emails.map(e => {
+      let found = true
+      let answer = answers[e.id]
+      let a = e.indicators
+      let b = answer.indicators
+
+      for (var i = 0; i < a.length; i++) {
+        if (b.includes(a[i]) == false) {
+          found = false
+        }
+      }
+      //how to identify if it's real email ----> if it has not indicators
+      if (a.length == 0 && answer.selectedItem == 2) {
+        // console.log(e.indicators)
+        // console.log(b)
+        // console.log(a.length == 0)
+
+        count++
+      }
+      else if (a.length == b.length && answer.selectedItem == 1 && found) {
+        count++
+
+      }
+
+
+    })
+
+    return count
+
   }
 
   handleChange = (selectedPage) => {
@@ -48,6 +95,7 @@ class Phishing_test extends PureComponent {
       ...this.state.emails,
       selected_email: this.state.emails[selectedPage - 1]
     })
+    this.child.hideIndicatorsMenu() // a function inside the child component Email
 
   }
 
@@ -88,23 +136,23 @@ class Phishing_test extends PureComponent {
     emails: [
       {
         id: 1, sender: 'asdij@aifjw.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q1.jpg',
-        indicators: { sender: true, receiver: false, content: true }
+        indicators: ["Sender", "Receiver", "Content"]
       },
       {
         id: 2, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q2.jpg',
-        indicators: { sender: true, receiver: true, content: true }
+        indicators: ["Sender", "Content"]
       },
       {
         id: 3, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q3.jpg',
-        indicators: { sender: false, receiver: false, content: false }
+        indicators: []
       },
       {
         id: 4, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q4.jpg',
-        indicators: { sender: false, receiver: false, content: false }
+        indicators: []
       },
       {
         id: 5, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q5.jpg',
-        indicators: { sender: false, receiver: true, content: true }
+        indicators: []
       },
       // {
       //   id: 6, sender: 'asdoe@asdeg.com', receiver: 'kkkower@gmail.com', content: 'https://www.phishingbox.com/phishing-test/img/phishing-test-q6.jpg',
@@ -131,7 +179,8 @@ class Phishing_test extends PureComponent {
 
     selected_email: {},
     chosen_answer: '',
-    user_answers: {}
+    user_answers: [],
+    result: []
   }
   /**
    * 
@@ -171,7 +220,7 @@ class Phishing_test extends PureComponent {
         <Row style={{ marginLeft: 55 }}> {/** style={{ marginLeft: 55 }}  */}
           <Col>
             <Pagination onChange={this.handleChange} simple defaultCurrent={1} defaultPageSize={1} total={this.state.emails.length} />
-            <Email updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
+            <Email onRef={ref => (this.child = ref)} showIndicatorMenu={false} updateUserAnswers={this.handleUserAnswer} all_answers={this.state.user_answers} progress_circle_percent={progress_circle_size} selected_answer={chosen_answer} id={emailProps.id} sender={emailProps.sender} receiver={emailProps.receiver} content={emailProps.content} indicators={emailProps.indicators} submitAllQuestions={this.handleSubmitAnswers} />
           </Col>
         </Row>
       </Card>

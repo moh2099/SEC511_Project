@@ -12,21 +12,21 @@ class Email extends Component {
         userSelection: {},
         //userIndicators: [],
     }
- 
+
     handleCheckedBox = (e) => {
         let tempIndicators = this.state.userSelection.indicators
 
         if (e.target.checked === true) {
             //console.log(this.state.userIndicators)
-            this.setState({ userSelection: { ...this.state.userSelection, indicators: [...tempIndicators, e.target.name] } }, () => this.props.updateUserAnswers(this.state.userSelection) )
-          //  this.setState({ ...this.state, userIndicators: [...this.state.userIndicators, e.target.name] })
+            this.setState({ userSelection: { ...this.state.userSelection, indicators: [...tempIndicators, e.target.name] } }, () => this.props.updateUserAnswers(this.state.userSelection))
+            //  this.setState({ ...this.state, userIndicators: [...this.state.userIndicators, e.target.name] })
         } else {
             let item = e.target.name
             tempIndicators = tempIndicators.filter((element) => {
                 return element !== item
             })
             //this.setState has a second parameter which is the callBack simply use () => someFunction syntax so that someFunction is executed after the state is updated, because this.setState is asynchronous function
-            this.setState({ userSelection: { ...this.state.userSelection, indicators: tempIndicators} },  () => this.props.updateUserAnswers(this.state.userSelection) )
+            this.setState({ userSelection: { ...this.state.userSelection, indicators: tempIndicators } }, () => this.props.updateUserAnswers(this.state.userSelection))
         }
     }
 
@@ -36,14 +36,21 @@ class Email extends Component {
             selectedItem: parseInt(item.props.eventKey),
             text: item.props.text,
             indicators: []
-          }
-          this.setState({ userSelection: selection })
+        }
+
+        // let temp = selection.indicators
+        // let sender = temp.conta
+        // let obj = {sender: temp.find(e => e == 'Sender' ), receiver: temp.find(e => e == 'Receiver' ), content:}
+
+
+
+        this.setState({ userSelection: selection })
         if (selection.selectedItem === 1) { // 'phishing email
             this.setState({ showIndicatorsMenu: true })
         } else {
             this.setState({ showIndicatorsMenu: false })
             this.props.updateUserAnswers(selection)
-         }
+        }
     }
 
     get_selected_answerTitles = (selection) => {
@@ -57,6 +64,18 @@ class Email extends Component {
         else
             return "Choose the email type"
     }
+
+    hideIndicatorsMenu = () => {
+        this.setState({ showIndicatorsMenu: false })
+    }
+
+    componentDidMount() {
+        this.props.onRef(this)
+    }
+    componentWillUnmount() {
+        this.props.onRef(undefined)
+    }
+
     render() {
         return (
             <Row>
