@@ -556,6 +556,7 @@ class Mail extends PureComponent {
               icon: "success",
             })
           } else { 
+            console.log('you have scored: ' + percentage)
             swal(`You have scored less than 75%, Please try again!`, {
               icon: "warning",
             })

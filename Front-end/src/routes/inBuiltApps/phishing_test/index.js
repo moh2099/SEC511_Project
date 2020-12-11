@@ -86,7 +86,7 @@ class Phishing_test extends PureComponent {
 
     })
 
-    return count
+    return [count, emails.length]
 
   }
 
