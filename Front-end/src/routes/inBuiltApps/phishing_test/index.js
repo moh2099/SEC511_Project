@@ -38,7 +38,7 @@ class Phishing_test extends PureComponent {
               buttons: true
             }).then((decision) => { 
               if (decision) { 
-                this.props.history.push('/helping_material')
+                this.props.history.push('/in-built-apps/helping_material/helping_material')
               }
             })
           } 
