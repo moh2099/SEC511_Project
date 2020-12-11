@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { Button, Checkbox, Progress, Dropdown, Menu, message } from "antd";
+import { Button, Checkbox, Progress, Dropdown, Menu, message, notification } from "antd";
 import { SaveFilled } from '@ant-design/icons';
 import CustomScrollbars from "util/CustomScrollbars";
 import randomEmail from 'random-email'
@@ -449,7 +449,7 @@ class Mail extends PureComponent {
         let year = date.getFullYear();
         let month = date.getMonth() + 1;
         let dt = date.getDate();
-        
+
 
         if (dt < 10) {
           dt = '0' + dt;
@@ -509,7 +509,7 @@ class Mail extends PureComponent {
       },
       user_answers: [],
       isPhishing: Math.random() < 0.4,
-      result:[],
+      result: [],
       selectedMails: 0,
       selectedFolder: 0,
       composeMail: false,
@@ -525,7 +525,7 @@ class Mail extends PureComponent {
     updated_user_answers = [...new Map(updated_user_answers.map(item => [item['id'], item])).values()]
 
     let emails = this.state.allMail
-    emails.map(e => { 
+    emails.map(e => {
       if (e.id == userSelection.id) {
         e.labels.push(3)
       }
@@ -534,11 +534,11 @@ class Mail extends PureComponent {
     message.success('You have selected: ' + userSelection.text, 2)
   }
 
-  handleSubmit = (e) => { 
+  handleSubmit = (e) => {
     e.preventDefault()
     swal({
       title: "Confirmation",
-      text: "Are you sure you want to submit your answers?",
+      text: "Are you sure you want to submit your inspections to the clients?",
       icon: "info",
       buttons: true,
     })
@@ -547,159 +547,204 @@ class Mail extends PureComponent {
 
           let user_answers = this.state.user_answers
           let emails = this.state.allMail
-          let result = this.check_answers(user_answers, emails)
-          this.setState({...this.state, result })
-          let percentage = (result[0] / result[1]) * 100
-          if (percentage > 75) {
-            swal(`Congratulation! You have scored ${percentage}%`, {
+          //let result = this.check_answers(user_answers, emails)
+          //this.setState({...this.state, result })
+          //let percentage = (result[0] / result[1]) * 100
+          // if (percentage > 75) {
+          //   swal(`Congratulation! You have scored ${percentage}%`, {
+          //     icon: "success",
+          //   })
+          // } else { 
+          if (user_answers.length == 1) {
+            console.log(`Dear user, the email "${user_answers[0].subject}"\nwith id# ${user_answers[0].id} \nhas been inspected by our team and we found that it is a ${user_answers[0].text} email`);
+            notification.success({description: `The email inspection of "${user_answers[0].subject}"\n has been sent to the client as ${user_answers[0].text} email.\n`, duration: 10})
+            swal(`${user_answers.length} Email were inspected and the result was sent to the client`, {
               icon: "success",
             })
-          } else { 
-            console.log('you have scored: ' + percentage)
-            swal(`You have scored less than 75%, Please try again!`, {
-              icon: "warning",
+
+          } else {
+            user_answers.map(ans => {
+              console.log(`Dear user, the email "${ans.subject}"\nwith id# ${ans.id} \nhas been inspected by our team and we found that it is a ${ans.text} email.\n`)
+              notification.success({description: `The email inspection of "${ans.subject}"\n has been sent to the client as ${ans.text} email.\n`, duration: 10})
             })
+            swal(`${user_answers.length} Emails were inspected and the results were sent to the clients`, {
+              icon: "success",
+            })
+
           }
-
-
         }
+
       })
-  }
-
-  check_answers = (answers, emails) => {
-    // console.log(answers)
-    // console.log(emails)
-    let count = 0
-    emails.map(e => {
-        //console.log(e.id, e.isPhishing);
-      let user_ans = answers.find(ans => ans.id === e.id).value
-      //console.log(answers.find(ans => ans.id === e.id).value)
-      if (e.isPhishing == false && user_ans == 0 || e.isPhishing == true && user_ans == 1) {
-        count++
-      }
-    })
-
-    let results = [ count, emails.length]
-    return results
-     
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ loader: false });
-    }, 1500);
-
-  }
+}
 
 
-  onMailChecked(data) {
-    data.selected = !data.selected;
-    let selectedMail = 0;
-    const mails = this.state.folderMails.map(mail => {
+
+// handleSubmit = (e) => { 
+//   e.preventDefault()
+//   swal({
+//     title: "Confirmation",
+//     text: "Are you sure you want to submit your answers?",
+//     icon: "info",
+//     buttons: true,
+//   })
+//     .then((decision) => {
+//       if (decision) {
+
+//         let user_answers = this.state.user_answers
+//         let emails = this.state.allMail
+//         let result = this.check_answers(user_answers, emails)
+//         this.setState({...this.state, result })
+//         let percentage = (result[0] / result[1]) * 100
+//         if (percentage > 75) {
+//           swal(`Congratulation! You have scored ${percentage}%`, {
+//             icon: "success",
+//           })
+//         } else { 
+//           console.log('you have scored: ' + percentage)
+//           swal(`You have scored less than 75%, Please try again!`, {
+//             icon: "warning",
+//           })
+//         }
+
+
+//       }
+//     })
+// }
+
+check_answers = (answers, emails) => {
+  // console.log(answers)
+  // console.log(emails)
+  let count = 0
+  emails.map(e => {
+    //console.log(e.id, e.isPhishing);
+    let user_ans = answers.find(ans => ans.id === e.id).value
+    //console.log(answers.find(ans => ans.id === e.id).value)
+    if (e.isPhishing == false && user_ans == 0 || e.isPhishing == true && user_ans == 1) {
+      count++
+    }
+  })
+
+  let results = [count, emails.length]
+  return results
+
+}
+
+componentDidMount() {
+  setTimeout(() => {
+    this.setState({ loader: false });
+  }, 1500);
+
+}
+
+
+onMailChecked(data) {
+  data.selected = !data.selected;
+  let selectedMail = 0;
+  const mails = this.state.folderMails.map(mail => {
+    if (mail.selected) {
+      selectedMail++;
+    }
+    if (mail.id === data.id) {
       if (mail.selected) {
         selectedMail++;
       }
-      if (mail.id === data.id) {
-        if (mail.selected) {
-          selectedMail++;
-        }
-        return data;
-      } else {
-        return mail;
-      }
-    }
-    );
-    this.setState({
-      selectedMails: selectedMail,
-      folderMails: mails
-    });
-  }
-
-  onAllMailSelect() {
-    const selectAll = this.state.selectedMails <= this.state.folderMails.length;
-    if (selectAll) {
-      this.getAllMail();
+      return data;
     } else {
-      this.getUnselectedAllMail();
+      return mail;
     }
   }
+  );
+  this.setState({
+    selectedMails: selectedMail,
+    folderMails: mails
+  });
+}
 
-  removeLabel(mail, label) {
-    mail.labels.splice(mail.labels.indexOf(label), 1);
-    if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
-      this.setState({
-        currentMail: { ...mail, labels: mail.labels }
-      })
-    }
-    return mail.labels;
+onAllMailSelect() {
+  const selectAll = this.state.selectedMails <= this.state.folderMails.length;
+  if (selectAll) {
+    this.getAllMail();
+  } else {
+    this.getUnselectedAllMail();
   }
+}
 
-  onStartSelect(data) {
-    data.starred = !data.starred;
+removeLabel(mail, label) {
+  mail.labels.splice(mail.labels.indexOf(label), 1);
+  if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
     this.setState({
-      alertMessage: data.starred ? 'Mail Mark as Star' : 'Mail Remove as Star',
+      currentMail: { ...mail, labels: mail.labels }
+    })
+  }
+  return mail.labels;
+}
+
+onStartSelect(data) {
+  data.starred = !data.starred;
+  this.setState({
+    alertMessage: data.starred ? 'Mail Mark as Star' : 'Mail Remove as Star',
+    showMessage: true,
+    folderMails: this.state.folderMails.map(mail =>
+      mail.id === data.id ?
+        data : mail
+    )
+  });
+}
+
+onImportantSelect(data) {
+  data.important = !data.important;
+  this.setState({
+    alertMessage: data.important ? 'Mail Mark as Important' : 'Mail Remove as Important',
+    showMessage: true,
+    folderMails: this.state.folderMails.map(mail =>
+      mail.id === data.id ?
+        data : mail
+    )
+  });
+}
+
+onMailSend(data) {
+  this.setState(
+    {
+      alertMessage: 'Mail Sent Successfully',
       showMessage: true,
-      folderMails: this.state.folderMails.map(mail =>
-        mail.id === data.id ?
-          data : mail
-      )
-    });
-  }
-
-  onImportantSelect(data) {
-    data.important = !data.important;
-    this.setState({
-      alertMessage: data.important ? 'Mail Mark as Important' : 'Mail Remove as Important',
-      showMessage: true,
-      folderMails: this.state.folderMails.map(mail =>
-        mail.id === data.id ?
-          data : mail
-      )
-    });
-  }
-
-  onMailSend(data) {
-    this.setState(
-      {
-        alertMessage: 'Mail Sent Successfully',
-        showMessage: true,
-        folderMails: this.state.allMail.concat(data),
-        allMail: this.state.allMail.concat(data)
-      }
-    );
-  }
-
-  onMailSelect(mail) {
-
-    this.setState({
-      loader: true,
-      currentMail: mail,
-    });
-    setTimeout(() => {
-      this.setState({ loader: false });
-    }, 1500);
-  }
-
-  addLabel(mail, label) {
-    if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
-      this.setState({
-        currentMail: { ...mail, labels: mail.labels.concat(label) }
-      })
+      folderMails: this.state.allMail.concat(data),
+      allMail: this.state.allMail.concat(data)
     }
-    return mail.labels.concat(label)
+  );
+}
+
+onMailSelect(mail) {
+
+  this.setState({
+    loader: true,
+    currentMail: mail,
+  });
+  setTimeout(() => {
+    this.setState({ loader: false });
+  }, 1500);
+}
+
+addLabel(mail, label) {
+  if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
+    this.setState({
+      currentMail: { ...mail, labels: mail.labels.concat(label) }
+    })
   }
+  return mail.labels.concat(label)
+}
 
 
-  render() {
-    let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.allMail.length) * 100
+render() {
+  let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.allMail.length) * 100
 
-    const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
-    return (
+  const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
+  return (
 
-      <div className="gx-main-content">
-        <div className="gx-app-module">
+    <div className="gx-main-content">
+      <div className="gx-app-module">
 
-          {/* <div className="gx-d-block gx-d-lg-none">
+        {/* <div className="gx-d-block gx-d-lg-none">
             <Drawer
               placement="left"
               closable={false}
@@ -713,8 +758,8 @@ class Mail extends PureComponent {
             {this.MailSideBar()}
           </div> */}
 
-          <div className="gx-module-box">
-            {/* <div className="gx-module-box-header">
+        <div className="gx-module-box">
+          {/* <div className="gx-module-box-header">
               <span className="gx-drawer-btn gx-d-flex gx-d-lg-none">
                   <i className="icon icon-menu gx-icon-btn" aria-label="Menu"
                      onClick={this.onToggleDrawer.bind(this)}/>
@@ -725,59 +770,59 @@ class Mail extends PureComponent {
 
             </div> */}
 
-            <div className="gx-module-box-content">
-              <Progress strokeColor="#cb42f5" style={{ marginBottom: 15 }} percent={progress_circle_size} />
-              <div className="gx-module-box-topbar">
-                {this.state.currentMail === null ?
-                  <div className="gx-flex-row gx-align-items-center">
-                    {this.state.folderMails.length > 0 ?
-                      progress_circle_size === 100 ? (
-                        <Button type="danger" shape="round" onClick={this.handleSubmit}> <SaveFilled />Submit</Button>
-                      ) : null
-                      // <Auxiliary>
-                      //   {/* <Checkbox color="primary" className="gx-icon-btn"
-                      //             indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
-                      //             checked={selectedMails > 0}
-                      //             onChange={this.onAllMailSelect.bind(this)}
-                      //             value="SelectMail"/> */}
+          <div className="gx-module-box-content">
+            <Progress strokeColor="#cb42f5" style={{ marginBottom: 15 }} percent={progress_circle_size} />
+            <div className="gx-module-box-topbar">
+              {this.state.currentMail === null ?
+                <div className="gx-flex-row gx-align-items-center">
+                  {this.state.folderMails.length > 0 ?
+                    progress_circle_size > 1 ? (
+                      <Button type="danger" shape="round" onClick={this.handleSubmit}> <SaveFilled />Submit</Button>
+                    ) : null
+                    // <Auxiliary>
+                    //   {/* <Checkbox color="primary" className="gx-icon-btn"
+                    //             indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
+                    //             checked={selectedMails > 0}
+                    //             onChange={this.onAllMailSelect.bind(this)}
+                    //             value="SelectMail"/> */}
 
-                      //   <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
-                      //     <div>
-                      //       <span className="gx-px-2"> {this.state.optionName}</span>
-                      //       <i className="icon icon-charvlet-down" /></div>
-                      //   </Dropdown>
-                      // </Auxiliary>
-                      : null}
-                  </div>
-                  :
-                  <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
-                    this.setState({ currentMail: null })
-                  }} />
-                }
-
-                <div classID="toolbar-separator" />
-
-                {(selectedMails > 0) && this.getMailActions()}
-
-              </div>
-
-              {loader ?
-                <div className="gx-loader-view">
-                  <CircularProgress />
+                    //   <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
+                    //     <div>
+                    //       <span className="gx-px-2"> {this.state.optionName}</span>
+                    //       <i className="icon icon-charvlet-down" /></div>
+                    //   </Dropdown>
+                    // </Auxiliary>
+                    : null}
                 </div>
-                : this.displayMail(currentMail, folderMails, noContentFoundMessage)}
+                :
+                <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
+                  this.setState({ currentMail: null })
+                }} />
+              }
 
-              {/* <ComposeMail open={composeMail} user={user}
+              <div classID="toolbar-separator" />
+
+              {(selectedMails > 0) && this.getMailActions()}
+
+            </div>
+
+            {loader ?
+              <div className="gx-loader-view">
+                <CircularProgress />
+              </div>
+              : this.displayMail(currentMail, folderMails, noContentFoundMessage)}
+
+            {/* <ComposeMail open={composeMail} user={user}
                            onClose={this.handleRequestClose.bind(this)}
                            onMailSend={this.onMailSend.bind(this)}/> */}
 
-            </div>
           </div>
         </div>
-        {showMessage && message.info(<span id="message-id">{alertMessage}</span>, 3, this.handleRequestClose)}
       </div>
-    )
-  }
+      {showMessage && message.info(<span id="message-id">{alertMessage}</span>, 3, this.handleRequestClose)}
+    </div>
+  )
+}
 }
 
 export default Mail;
