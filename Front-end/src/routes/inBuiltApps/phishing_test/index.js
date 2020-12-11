@@ -6,7 +6,7 @@ import { Card, Col, Row, message } from 'antd';
 import { Pagination } from 'antd';
 import Email from './Email'
 import swal from 'sweetalert'
-
+import history from "react-router-dom";
 
 class Phishing_test extends PureComponent {
 
@@ -33,8 +33,13 @@ class Phishing_test extends PureComponent {
             })
           } else {
             console.log('you have scored: ' + percentage)
-            swal(`You have scored less than 75%, Please try again!`, {
+            swal(`You have scored less than 75%.\nDo you want to view the helping material ?`, {
               icon: "warning",
+              buttons: true
+            }).then((decision) => { 
+              if (decision) { 
+                this.props.history.push('/helping_material')
+              }
             })
           } 
 
@@ -180,7 +185,8 @@ class Phishing_test extends PureComponent {
     selected_email: {},
     chosen_answer: '',
     user_answers: [],
-    result: []
+    result: [],
+    showHelpingMaterial: false
   }
   /**
    * 

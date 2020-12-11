@@ -11,7 +11,8 @@ const InBuiltApps = ({match}) => (
     {/* <Route path={`${match.url}/contacts`} component={asyncComponent(() => import('./Contact'))}/>
     <Route path={`${match.url}/chat`} component={asyncComponent(() => import('./Chat/index'))}/> */}
     <Route path={`${match.url}/phishing_simulator`} component={asyncComponent(() => import('./phishing_simulator'))} />
-    <Route path={`${match.url}/phishing_test`} component={asyncComponent(() => import('./phishing_test'))}/>
+    <Route path={`${match.url}/phishing_test`} component={asyncComponent(() => import('./phishing_test'))} />
+    <Route path={`${match.url}/helping_material`} component={asyncComponent(() => import('./helping_material'))}/>
 
     {/* <Route path={`${match.url}/mail`} component={asyncComponent(() => import('./Mail'))}/> */}
     {/* <Route path={`${match.url}/todo`} component={asyncComponent(() => import('./Todo'))}/>

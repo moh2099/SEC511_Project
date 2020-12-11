@@ -38,7 +38,7 @@ const SidebarContent = () => {
   const defaultOpenKeys = selectedKeys.split('/')[1];
   return (
     <>
-      <SidebarLogo />
+      {/* <SidebarLogo /> */}
       <div className="gx-sidebar-content">
         <div className={`gx-sidebar-notifications ${getNoHeaderClass(navStyle)}`}>
           <UserProfile />
@@ -101,7 +101,9 @@ const SidebarContent = () => {
               <Menu.Item key="in-built-apps/phishing_test">
                 <Link to="/in-built-apps/phishing_test"><i className="icon icon-email" /><span>Phishing Test</span></Link>
               </Menu.Item>
-
+              <Menu.Item key="in-built-apps/helping_material">
+                <Link to="/in-built-apps/helping_material"><i className="icon icon-email" /><span>Helping Material</span></Link>
+              </Menu.Item>
               {/* <Menu.Item key="in-built-apps/mail">
                 <Link to="/in-built-apps/mail"><i className="icon icon-email" /><span><IntlMessages
                   id="sidebar.mailApp" /></span></Link>

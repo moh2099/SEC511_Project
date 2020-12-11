@@ -531,7 +531,6 @@ class Mail extends PureComponent {
       }
     })
     this.setState({ ...this.state, allMail: emails, user_answers: updated_user_answers })
-    
     message.success('You have selected: ' + userSelection.text, 2)
   }
 
