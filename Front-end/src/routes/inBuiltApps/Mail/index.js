@@ -598,8 +598,11 @@ class Mail extends PureComponent {
                 'accept': 'application/json',
                 'Content-Type': 'application/json'
               }
-            }).then(res => console.log(res)).then(
+            }).then(res => {
+              console.log(res)
               notification.success({ description: `The email inspection of "${user_answers[0].subject}"\n has been sent to the client as ${user_answers[0].text} email.\n`, duration: 10 })
+
+            }
 
             ).catch(error => {
               console.log(error)
@@ -632,9 +635,11 @@ class Mail extends PureComponent {
                   'accept': 'application/json',
                   'Content-Type': 'application/json'
                 }
-              }).then(res => console.log(res)).then(
+              }).then(res => {
+                console.log(res)
                 notification.success({ description: `The email inspection of "${ans.subject}"\n has been sent to the client as ${ans.text} email.\n`, duration: 5 })
-              ).catch(error => {
+
+              }).catch(error => {
                 console.log(error)
                 notification.error("MailSlurp doesn't support the domain of this email " + user_answers[0].email)
               }
