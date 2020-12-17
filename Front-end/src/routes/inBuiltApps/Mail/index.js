@@ -16,6 +16,21 @@ import MailDetail from "components/mail/MailDetail/index";
 import IntlMessages from "util/IntlMessages";
 import CircularProgress from "../../../components/CircularProgress/index";
 import swal from 'sweetalert'
+import axios from 'axios'
+
+const API_KEY = "673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094";
+const inboxData = {
+  created: "2020-12-08T21:09:11.976Z",
+  createdAt: "2020-12-08T21:09:11.976Z",
+  description: null,
+  emailAddress: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85@mailslurp.com",
+  expiresAt: "2020-12-08T22:09:11.976655298Z",
+  favourite: false,
+  id: "14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85",
+  name: null,
+  tags: null,
+  userId: "8249091e-39c3-4ca6-8ca6-854d0f741bdb",
+}
 
 
 class Mail extends PureComponent {
@@ -463,7 +478,7 @@ class Mail extends PureComponent {
           'from': {
             'name': random_name(),
             'avatar': "https://via.placeholder.com/150x150",
-            'email': randomEmail()
+            'email': e.from
           },
           'to': [
             {
@@ -519,7 +534,13 @@ class Mail extends PureComponent {
   }
   handleUserSelection = (e) => {
 
-    let userSelection = { id: e.target.id, value: e.target.attributes.value.nodeValue, text: e.target.attributes.text.nodeValue, subject: e.target.attributes.subject.nodeValue }
+    let userSelection = {
+      id: e.target.id,
+      value: e.target.attributes.value.nodeValue,
+      text: e.target.attributes.text.nodeValue,
+      subject: e.target.attributes.subject.nodeValue,
+      email: e.target.attributes.from.nodeValue,
+    }
     let updated_user_answers = this.state.user_answers
     updated_user_answers.push(userSelection)
     updated_user_answers = [...new Map(updated_user_answers.map(item => [item['id'], item])).values()]
@@ -555,196 +576,249 @@ class Mail extends PureComponent {
           //     icon: "success",
           //   })
           // } else { 
+
+          let url = "https://api.mailslurp.com/inboxes/14e0c2a4-0624-4e5a-b8b0-6cc2dd893a85?apiKey=673ba1248cc664ce1099171659818622acdc62c23dcab27ce51c4aeb409ab094"
+          let data = {
+            "body": "asd",
+            "isHTML": true,
+            "subject": "Phishing Inspection Result",
+            "to": [
+              ''
+            ]
+          }
+
           if (user_answers.length == 1) {
-            console.log(`Dear user, the email "${user_answers[0].subject}"\nwith id# ${user_answers[0].id} \nhas been inspected by our team and we found that it is a ${user_answers[0].text} email`);
-            notification.success({description: `The email inspection of "${user_answers[0].subject}"\n has been sent to the client as ${user_answers[0].text} email.\n`, duration: 10})
-            swal(`${user_answers.length} Email were inspected and the result was sent to the client`, {
-              icon: "success",
-            })
+            let body = `Dear user, the email "${user_answers[0].subject}"\nwith id# ${user_answers[0].id} \nhas been inspected by our team and we found that it is a ${user_answers[0].text} email`
+            data['body'] = body
+            data['to'] = [user_answers[0].email]
+            //console.log(`Dear user, the email "${user_answers[0].subject}"\nwith id# ${user_answers[0].id} \nhas been inspected by our team and we found that it is a ${user_answers[0].text} email`);
+
+            axios.post(url, data, {
+              headers: {
+                'accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            }).then(res => console.log(res)).then(
+              notification.success({ description: `The email inspection of "${user_answers[0].subject}"\n has been sent to the client as ${user_answers[0].text} email.\n`, duration: 10 })
+
+            ).catch(error => {
+              console.log(error)
+              notification.error("MailSlurp doesn't support the domain of this email " + user_answers[0].email)
+            }
+            )
+
+            // swal(`${user_answers.length} Email were inspected and the result was sent to the client`, {
+            //   icon: "success",
+            // })
+
+            { /*
+              host: 'mtp.sparkpostmail.com',
+              port: 587
+              username: 'SMTP_Injection',
+              password: '5c3aac4c97fb528b4a03e02457701fcb2ba72698'
+
+
+
+            */}
 
           } else {
             user_answers.map(ans => {
-              console.log(`Dear user, the email "${ans.subject}"\nwith id# ${ans.id} \nhas been inspected by our team and we found that it is a ${ans.text} email.\n`)
-              notification.success({description: `The email inspection of "${ans.subject}"\n has been sent to the client as ${ans.text} email.\n`, duration: 10})
+              let body = `Dear user, the email "${ans.subject}"\nwith id# ${ans.id} \nhas been inspected by our team and we found that it is a ${ans.text} email.\n`
+              data['body'] = body
+              data['to'] = [ans.email]
+
+              axios.post(url, data, {
+                headers: {
+                  'accept': 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              }).then(res => console.log(res)).then(
+                notification.success({ description: `The email inspection of "${ans.subject}"\n has been sent to the client as ${ans.text} email.\n`, duration: 5 })
+              ).catch(error => {
+                console.log(error)
+                notification.error("MailSlurp doesn't support the domain of this email " + user_answers[0].email)
+              }
+              )
+
             })
-            swal(`${user_answers.length} Emails were inspected and the results were sent to the clients`, {
-              icon: "success",
-            })
+            // swal(`${user_answers.length} Emails were inspected and the results were sent to the clients`, {
+            //   icon: "success",
+            // })
 
           }
         }
 
       })
-}
+  }
 
 
 
-// handleSubmit = (e) => { 
-//   e.preventDefault()
-//   swal({
-//     title: "Confirmation",
-//     text: "Are you sure you want to submit your answers?",
-//     icon: "info",
-//     buttons: true,
-//   })
-//     .then((decision) => {
-//       if (decision) {
+  // handleSubmit = (e) => { 
+  //   e.preventDefault()
+  //   swal({
+  //     title: "Confirmation",
+  //     text: "Are you sure you want to submit your answers?",
+  //     icon: "info",
+  //     buttons: true,
+  //   })
+  //     .then((decision) => {
+  //       if (decision) {
 
-//         let user_answers = this.state.user_answers
-//         let emails = this.state.allMail
-//         let result = this.check_answers(user_answers, emails)
-//         this.setState({...this.state, result })
-//         let percentage = (result[0] / result[1]) * 100
-//         if (percentage > 75) {
-//           swal(`Congratulation! You have scored ${percentage}%`, {
-//             icon: "success",
-//           })
-//         } else { 
-//           console.log('you have scored: ' + percentage)
-//           swal(`You have scored less than 75%, Please try again!`, {
-//             icon: "warning",
-//           })
-//         }
-
-
-//       }
-//     })
-// }
-
-check_answers = (answers, emails) => {
-  // console.log(answers)
-  // console.log(emails)
-  let count = 0
-  emails.map(e => {
-    //console.log(e.id, e.isPhishing);
-    let user_ans = answers.find(ans => ans.id === e.id).value
-    //console.log(answers.find(ans => ans.id === e.id).value)
-    if (e.isPhishing == false && user_ans == 0 || e.isPhishing == true && user_ans == 1) {
-      count++
-    }
-  })
-
-  let results = [count, emails.length]
-  return results
-
-}
-
-componentDidMount() {
-  setTimeout(() => {
-    this.setState({ loader: false });
-  }, 1500);
-
-}
+  //         let user_answers = this.state.user_answers
+  //         let emails = this.state.allMail
+  //         let result = this.check_answers(user_answers, emails)
+  //         this.setState({...this.state, result })
+  //         let percentage = (result[0] / result[1]) * 100
+  //         if (percentage > 75) {
+  //           swal(`Congratulation! You have scored ${percentage}%`, {
+  //             icon: "success",
+  //           })
+  //         } else { 
+  //           console.log('you have scored: ' + percentage)
+  //           swal(`You have scored less than 75%, Please try again!`, {
+  //             icon: "warning",
+  //           })
+  //         }
 
 
-onMailChecked(data) {
-  data.selected = !data.selected;
-  let selectedMail = 0;
-  const mails = this.state.folderMails.map(mail => {
-    if (mail.selected) {
-      selectedMail++;
-    }
-    if (mail.id === data.id) {
+  //       }
+  //     })
+  // }
+
+  check_answers = (answers, emails) => {
+    // console.log(answers)
+    // console.log(emails)
+    let count = 0
+    emails.map(e => {
+      //console.log(e.id, e.isPhishing);
+      let user_ans = answers.find(ans => ans.id === e.id).value
+      //console.log(answers.find(ans => ans.id === e.id).value)
+      if (e.isPhishing == false && user_ans == 0 || e.isPhishing == true && user_ans == 1) {
+        count++
+      }
+    })
+
+    let results = [count, emails.length]
+    return results
+
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ loader: false });
+    }, 1500);
+
+  }
+
+
+  onMailChecked(data) {
+    data.selected = !data.selected;
+    let selectedMail = 0;
+    const mails = this.state.folderMails.map(mail => {
       if (mail.selected) {
         selectedMail++;
       }
-      return data;
+      if (mail.id === data.id) {
+        if (mail.selected) {
+          selectedMail++;
+        }
+        return data;
+      } else {
+        return mail;
+      }
+    }
+    );
+    this.setState({
+      selectedMails: selectedMail,
+      folderMails: mails
+    });
+  }
+
+  onAllMailSelect() {
+    const selectAll = this.state.selectedMails <= this.state.folderMails.length;
+    if (selectAll) {
+      this.getAllMail();
     } else {
-      return mail;
+      this.getUnselectedAllMail();
     }
   }
-  );
-  this.setState({
-    selectedMails: selectedMail,
-    folderMails: mails
-  });
-}
 
-onAllMailSelect() {
-  const selectAll = this.state.selectedMails <= this.state.folderMails.length;
-  if (selectAll) {
-    this.getAllMail();
-  } else {
-    this.getUnselectedAllMail();
+  removeLabel(mail, label) {
+    mail.labels.splice(mail.labels.indexOf(label), 1);
+    if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
+      this.setState({
+        currentMail: { ...mail, labels: mail.labels }
+      })
+    }
+    return mail.labels;
   }
-}
 
-removeLabel(mail, label) {
-  mail.labels.splice(mail.labels.indexOf(label), 1);
-  if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
+  onStartSelect(data) {
+    data.starred = !data.starred;
     this.setState({
-      currentMail: { ...mail, labels: mail.labels }
-    })
-  }
-  return mail.labels;
-}
-
-onStartSelect(data) {
-  data.starred = !data.starred;
-  this.setState({
-    alertMessage: data.starred ? 'Mail Mark as Star' : 'Mail Remove as Star',
-    showMessage: true,
-    folderMails: this.state.folderMails.map(mail =>
-      mail.id === data.id ?
-        data : mail
-    )
-  });
-}
-
-onImportantSelect(data) {
-  data.important = !data.important;
-  this.setState({
-    alertMessage: data.important ? 'Mail Mark as Important' : 'Mail Remove as Important',
-    showMessage: true,
-    folderMails: this.state.folderMails.map(mail =>
-      mail.id === data.id ?
-        data : mail
-    )
-  });
-}
-
-onMailSend(data) {
-  this.setState(
-    {
-      alertMessage: 'Mail Sent Successfully',
+      alertMessage: data.starred ? 'Mail Mark as Star' : 'Mail Remove as Star',
       showMessage: true,
-      folderMails: this.state.allMail.concat(data),
-      allMail: this.state.allMail.concat(data)
-    }
-  );
-}
-
-onMailSelect(mail) {
-
-  this.setState({
-    loader: true,
-    currentMail: mail,
-  });
-  setTimeout(() => {
-    this.setState({ loader: false });
-  }, 1500);
-}
-
-addLabel(mail, label) {
-  if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
-    this.setState({
-      currentMail: { ...mail, labels: mail.labels.concat(label) }
-    })
+      folderMails: this.state.folderMails.map(mail =>
+        mail.id === data.id ?
+          data : mail
+      )
+    });
   }
-  return mail.labels.concat(label)
-}
+
+  onImportantSelect(data) {
+    data.important = !data.important;
+    this.setState({
+      alertMessage: data.important ? 'Mail Mark as Important' : 'Mail Remove as Important',
+      showMessage: true,
+      folderMails: this.state.folderMails.map(mail =>
+        mail.id === data.id ?
+          data : mail
+      )
+    });
+  }
+
+  onMailSend(data) {
+    this.setState(
+      {
+        alertMessage: 'Mail Sent Successfully',
+        showMessage: true,
+        folderMails: this.state.allMail.concat(data),
+        allMail: this.state.allMail.concat(data)
+      }
+    );
+  }
+
+  onMailSelect(mail) {
+
+    this.setState({
+      loader: true,
+      currentMail: mail,
+    });
+    setTimeout(() => {
+      this.setState({ loader: false });
+    }, 1500);
+  }
+
+  addLabel(mail, label) {
+    if (this.state.currentMail !== null && mail.id === this.state.currentMail.id) {
+      this.setState({
+        currentMail: { ...mail, labels: mail.labels.concat(label) }
+      })
+    }
+    return mail.labels.concat(label)
+  }
 
 
-render() {
-  let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.allMail.length) * 100
+  render() {
+    let progress_circle_size = (Object.keys(this.state.user_answers).length / this.state.allMail.length) * 100
 
-  const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
-  return (
+    const { selectedMails, loader, currentMail, drawerState, folderMails, composeMail, user, alertMessage, showMessage, noContentFoundMessage } = this.state;
+    return (
 
-    <div className="gx-main-content">
-      <div className="gx-app-module">
+      <div className="gx-main-content">
+        <div className="gx-app-module">
 
-        {/* <div className="gx-d-block gx-d-lg-none">
+          {/* <div className="gx-d-block gx-d-lg-none">
             <Drawer
               placement="left"
               closable={false}
@@ -758,8 +832,8 @@ render() {
             {this.MailSideBar()}
           </div> */}
 
-        <div className="gx-module-box">
-          {/* <div className="gx-module-box-header">
+          <div className="gx-module-box">
+            {/* <div className="gx-module-box-header">
               <span className="gx-drawer-btn gx-d-flex gx-d-lg-none">
                   <i className="icon icon-menu gx-icon-btn" aria-label="Menu"
                      onClick={this.onToggleDrawer.bind(this)}/>
@@ -770,59 +844,59 @@ render() {
 
             </div> */}
 
-          <div className="gx-module-box-content">
-            <Progress strokeColor="#cb42f5" style={{ marginBottom: 15 }} percent={progress_circle_size} />
-            <div className="gx-module-box-topbar">
-              {this.state.currentMail === null ?
-                <div className="gx-flex-row gx-align-items-center">
-                  {this.state.folderMails.length > 0 ?
-                    progress_circle_size > 1 ? (
-                      <Button type="danger" shape="round" onClick={this.handleSubmit}> <SaveFilled />Submit</Button>
-                    ) : null
-                    // <Auxiliary>
-                    //   {/* <Checkbox color="primary" className="gx-icon-btn"
-                    //             indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
-                    //             checked={selectedMails > 0}
-                    //             onChange={this.onAllMailSelect.bind(this)}
-                    //             value="SelectMail"/> */}
+            <div className="gx-module-box-content">
+              <Progress strokeColor="#cb42f5" style={{ marginBottom: 15 }} percent={progress_circle_size} />
+              <div className="gx-module-box-topbar">
+                {this.state.currentMail === null ?
+                  <div className="gx-flex-row gx-align-items-center">
+                    {this.state.folderMails.length > 0 ?
+                      progress_circle_size > 1 ? (
+                        <Button type="danger" shape="round" onClick={this.handleSubmit}> <SaveFilled />Submit</Button>
+                      ) : null
+                      // <Auxiliary>
+                      //   {/* <Checkbox color="primary" className="gx-icon-btn"
+                      //             indeterminate={selectedMails > 0 && selectedMails < folderMails.length}
+                      //             checked={selectedMails > 0}
+                      //             onChange={this.onAllMailSelect.bind(this)}
+                      //             value="SelectMail"/> */}
 
-                    //   <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
-                    //     <div>
-                    //       <span className="gx-px-2"> {this.state.optionName}</span>
-                    //       <i className="icon icon-charvlet-down" /></div>
-                    //   </Dropdown>
-                    // </Auxiliary>
-                    : null}
-                </div>
-                :
-                <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
-                  this.setState({ currentMail: null })
-                }} />
-              }
+                      //   <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
+                      //     <div>
+                      //       <span className="gx-px-2"> {this.state.optionName}</span>
+                      //       <i className="icon icon-charvlet-down" /></div>
+                      //   </Dropdown>
+                      // </Auxiliary>
+                      : null}
+                  </div>
+                  :
+                  <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
+                    this.setState({ currentMail: null })
+                  }} />
+                }
 
-              <div classID="toolbar-separator" />
+                <div classID="toolbar-separator" />
 
-              {(selectedMails > 0) && this.getMailActions()}
+                {(selectedMails > 0) && this.getMailActions()}
 
-            </div>
-
-            {loader ?
-              <div className="gx-loader-view">
-                <CircularProgress />
               </div>
-              : this.displayMail(currentMail, folderMails, noContentFoundMessage)}
 
-            {/* <ComposeMail open={composeMail} user={user}
+              {loader ?
+                <div className="gx-loader-view">
+                  <CircularProgress />
+                </div>
+                : this.displayMail(currentMail, folderMails, noContentFoundMessage)}
+
+              {/* <ComposeMail open={composeMail} user={user}
                            onClose={this.handleRequestClose.bind(this)}
                            onMailSend={this.onMailSend.bind(this)}/> */}
 
+            </div>
           </div>
         </div>
+        {showMessage && message.info(<span id="message-id">{alertMessage}</span>, 3, this.handleRequestClose)}
       </div>
-      {showMessage && message.info(<span id="message-id">{alertMessage}</span>, 3, this.handleRequestClose)}
-    </div>
-  )
-}
+    )
+  }
 }
 
 export default Mail;

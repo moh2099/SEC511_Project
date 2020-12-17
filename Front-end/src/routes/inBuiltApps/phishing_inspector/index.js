@@ -24,8 +24,6 @@ const inboxData = {
   userId: "8249091e-39c3-4ca6-8ca6-854d0f741bdb",
 }
 
-
-
 class Phishing_inspector extends PureComponent {
 
   async getEmails() {
